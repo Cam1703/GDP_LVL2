@@ -67,7 +67,7 @@ public class IdleState : State
 
 public class WalkState : State
 {
-    private float velocity = 5f;
+    
     public WalkState(GameObject owner) : base(owner) { }
 
     public override void Enter()
@@ -76,7 +76,7 @@ public class WalkState : State
     }
     public override void Update()
     {
-        owner.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(InputManager.movement.x, 0f).normalized * velocity;
+        owner.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(InputManager.movement.x, 0f).normalized * owner.GetComponent<PlayerController>().velocity;
         
         // Debug.Log("Updating a Idle");
         if (InputManager.movement.x == 0f)

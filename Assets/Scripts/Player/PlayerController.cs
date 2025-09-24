@@ -3,6 +3,7 @@ using UnityEngine;
 public class PlayerController : MonoBehaviour
 {
 
+    public float velocity = 5.0f;
     public StateMachine playerStateMachine;
 
     void Awake()
