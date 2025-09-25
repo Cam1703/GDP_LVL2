@@ -32,6 +32,18 @@ public abstract class State
     }
     public virtual void Exit() { }
 
+    public virtual void UpdateMovementX()
+    {
+        if (InputManager.movement.x != 0f)
+        {
+            rb.linearVelocityX = Mathf.Sign(InputManager.movement.x) * playerController.velocity;
+        }
+        else
+        {
+            rb.linearVelocityX = 0f;
+        }
+    }
+
 }
 
 public class StateMachine {
@@ -104,8 +116,7 @@ public class WalkState : State
     {
         base.Update();
         
-        Vector2 direction = new Vector2(InputManager.movement.x, 0f).normalized;
-        rb.linearVelocity = direction * playerController.velocity;
+        UpdateMovementX();
         
         // Debug.Log("Updating a Idle");
         if (InputManager.movement.x == 0f && isGrounded)
@@ -149,6 +160,8 @@ public class JumpState : State
     }
     public override void Update()
     {
+        UpdateMovementX();
+
         if (InputManager.jump)
         {
             jumpTime += Time.deltaTime;
@@ -182,6 +195,8 @@ public class FallState : State
     public override void Update()
     {
         base.Update();
+
+        UpdateMovementX();
 
         if (InputManager.movement.x != 0 && isGrounded)
         {
