@@ -1,14 +1,35 @@
+using Unity.IO.LowLevel.Unsafe;
 using UnityEngine;
+using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public abstract class State
 {
+    private const float distanceToCheck = 0.1f;
     protected GameObject owner;
 
-    public State(GameObject owner)
-        { this.owner = owner; }
+    protected bool isGrounded;
+    protected Rigidbody2D rb;
+    protected PlayerController playerController;
 
-    public virtual void Enter(){ }
-    public virtual void Update() { }
+    public State(GameObject owner)
+    { 
+        this.owner = owner;
+        this.rb = owner.GetComponent<Rigidbody2D>();
+        this.playerController = owner.GetComponent<PlayerController>();
+    }
+
+    public virtual void Enter() { }
+    public virtual void Update() 
+    {
+        if (Physics2D.Raycast(owner.transform.position, Vector2.down, distanceToCheck, LayerMask.GetMask("Water")))
+        {
+            isGrounded = true;
+        }
+        else
+        {
+            isGrounded = false;
+        }
+    }
     public virtual void Exit() { }
 
 }
@@ -51,11 +72,16 @@ public class IdleState : State
 
     public override void Update()
     {
+        base.Update();
         // Debug.Log("Updating a Idle");
-        if (InputManager.movement.x != 0f)
+        if (InputManager.movement.x != 0f && isGrounded)
         {
-            owner.GetComponent<PlayerController>().playerStateMachine.ChangeState(new WalkState(owner));
-        }    
+            playerController.playerStateMachine.ChangeState(new WalkState(owner));
+        }
+        if (InputManager.jump && isGrounded)
+        {
+            playerController.playerStateMachine.ChangeState(new JumpState(owner));
+        }
     }
 
     public override void Exit()
@@ -76,17 +102,99 @@ public class WalkState : State
     }
     public override void Update()
     {
-        owner.GetComponent<Rigidbody2D>().linearVelocity = new Vector2(InputManager.movement.x, 0f).normalized * owner.GetComponent<PlayerController>().velocity;
+        base.Update();
+        
+        Vector2 direction = new Vector2(InputManager.movement.x, 0f).normalized;
+        rb.linearVelocity = direction * playerController.velocity;
         
         // Debug.Log("Updating a Idle");
-        if (InputManager.movement.x == 0f)
+        if (InputManager.movement.x == 0f && isGrounded)
         {
-            owner.GetComponent<PlayerController>().playerStateMachine.ChangeState(new IdleState(owner));
+            playerController.playerStateMachine.ChangeState(new IdleState(owner));
+        }
+        if (InputManager.jump && isGrounded) 
+        {
+            playerController.playerStateMachine.ChangeState(new JumpState(owner));
+        }
+        if (!isGrounded)
+        {
+            playerController.playerStateMachine.ChangeState(new FallState(owner));
         }
     }
 
     public override void Exit()
     {
         Debug.Log("Slaiendo a walk");
+    }
+}
+
+public class JumpState : State
+{
+
+    public JumpState(GameObject owner) : base(owner) { }
+    
+    private float jumpHeight = 2f;
+    private float jumpForce;
+    private float buttonTime = 0.3f;
+    private float jumpTime;
+    private bool cancelled;
+
+    public override void Enter()
+    {
+        Debug.Log("Entrando a Jump");
+        cancelled = false;
+        jumpTime = 0;
+        jumpForce = Mathf.Sqrt(jumpHeight * -2 * (Physics2D.gravity.y * rb.gravityScale));
+        rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+    }
+    public override void Update()
+    {
+        if (InputManager.jump)
+        {
+            jumpTime += Time.deltaTime;
+        } 
+        else if (jumpTime < buttonTime)
+        {
+            playerController.playerStateMachine.ChangeState(new FallState(owner));
+        }
+
+        if (rb.linearVelocity.y < 0f)
+        {
+            playerController.playerStateMachine.ChangeState(new FallState(owner));
+        }
+    }
+
+    public override void Exit()
+    {
+        Debug.Log("Slaiendo a jump");
+    }
+}
+
+public class FallState : State
+{
+
+    public FallState(GameObject owner) : base(owner) { }
+
+    public override void Enter()
+    {
+        Debug.Log("Entrando a Fall");
+    }
+    public override void Update()
+    {
+        base.Update();
+
+        if (InputManager.movement.x != 0 && isGrounded)
+        {
+            playerController.playerStateMachine.ChangeState(new WalkState(owner));
+        }
+        if (InputManager.movement.x == 0 && isGrounded)
+        {
+            playerController.playerStateMachine.ChangeState(new IdleState(owner));
+        }
+    }
+
+    public override void Exit()
+    {
+        Debug.Log("Slaiendo a Fall");
     }
 }
