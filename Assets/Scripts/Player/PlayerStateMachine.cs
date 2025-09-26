@@ -168,7 +168,7 @@ public class JumpState : State
         } 
         else if (jumpTime < buttonTime)
         {
-            playerController.playerStateMachine.ChangeState(new FallState(owner));
+            playerController.playerStateMachine.ChangeState(new FallFastState(owner));
         }
 
         if (rb.linearVelocity.y < 0f)
@@ -212,4 +212,17 @@ public class FallState : State
     {
         Debug.Log("Slaiendo a Fall");
     }
+}
+
+public class FallFastState : FallState
+{
+
+    public FallFastState(GameObject owner) : base(owner) { }
+
+    public override void Enter()
+    {
+        base.Enter();
+        rb.linearVelocityY = 0f;
+    }
+   
 }
