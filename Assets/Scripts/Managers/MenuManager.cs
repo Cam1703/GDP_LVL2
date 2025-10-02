@@ -5,6 +5,7 @@ public class MenuManager : MonoBehaviour
 {
 
     public static MenuManager instance;
+    public GameObject inventory;
 
     private void Awake()
     {
@@ -22,6 +23,16 @@ public class MenuManager : MonoBehaviour
     public void OnStartButton()
     {
         SceneManager.LoadScene("SampleScene");
+    }
+
+    public void OnInventoryButton()
+    { 
+        inventory.SetActive(true);
+    }
+
+    public void OnPlaySceneButton()
+    {
+        inventory.SetActive(false);
     }
 
     public void OnQuitButton()

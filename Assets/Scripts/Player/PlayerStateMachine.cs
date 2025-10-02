@@ -148,12 +148,10 @@ public class JumpState : State
     private float jumpForce;
     private float buttonTime = 0.3f;
     private float jumpTime;
-    private bool cancelled;
 
     public override void Enter()
     {
         Debug.Log("Entrando a Jump");
-        cancelled = false;
         jumpTime = 0;
         jumpForce = Mathf.Sqrt(jumpHeight * -2 * (Physics2D.gravity.y * rb.gravityScale));
         rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
