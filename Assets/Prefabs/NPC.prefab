@@ -220,6 +220,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   visualCue: {fileID: 2205486488793030289}
   inkJSON: {fileID: 4900000, guid: 45f3983c58ecf2c4d9b06eb2fb33fe16, type: 3}
+  language: 0
 --- !u!23 &539129524644777179
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -566,7 +567,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5681734966058821964}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 942533ab4ed62354b96b6ff2bbdb0756, type: 3}
   m_Name: 
@@ -810,5 +811,5 @@ MonoBehaviour:
   _SortingLayerID: 0
   _SortingOrder: 0
   m_hasFontAssetChanged: 0
-  m_renderer: {fileID: 539129524644777179}
+  m_renderer: {fileID: 2332928440928470486}
   m_maskType: 0

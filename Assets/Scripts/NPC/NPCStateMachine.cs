@@ -6,6 +6,7 @@ public abstract class NPCState
     protected GameObject owner;
     protected Rigidbody2D rb;
     protected Animator animator;
+    protected bool playerInRange => owner.GetComponentInChildren<DialogueTrigger>().playerInRange;
 
     public NPCState(GameObject owner)
     {
@@ -27,9 +28,7 @@ public class NPCStateMachine
     public void ChangeState(NPCState newState)
     {
         if (CurrentState != null)
-        {
             CurrentState.Exit();
-        }
 
         CurrentState = newState;
         CurrentState.Enter();
@@ -38,16 +37,13 @@ public class NPCStateMachine
     public void Update()
     {
         if (CurrentState != null)
-        {
             CurrentState.Update();
-        }
     }
 }
 
 public class NPCIdleState : NPCState
 {
     private float timer;
-    private bool idleTimerExpired;
 
     public NPCIdleState(GameObject owner) : base(owner) { }
 
@@ -55,22 +51,24 @@ public class NPCIdleState : NPCState
     {
         Debug.Log("NPC-Entering Idle State");
         timer = 0f;
-        idleTimerExpired = false;
-        rb.linearVelocityX = 0; // Stop movement
+        rb.linearVelocity = Vector2.zero;
         animator.Play("Idle");
-
     }
 
     public override void Update()
     {
-        if (!idleTimerExpired)
+        // Priority: Dialogue first
+        if (DialogueManager.Instance.IsDialoguePlaying && playerInRange)
         {
-            timer += Time.deltaTime;
-            if (timer >= npcController.idleTimer)
-            {
-                idleTimerExpired = true;
-                npcController.npcStateMachine.ChangeState(new NPCPatrolState(owner));
-            }
+            npcController.npcStateMachine.ChangeState(new NPCTalkingState(owner));
+            return;
+        }
+
+        // Patrol after idle timer
+        timer += Time.deltaTime;
+        if (timer >= npcController.idleTimer)
+        {
+            npcController.npcStateMachine.ChangeState(new NPCPatrolState(owner));
         }
     }
 
@@ -92,6 +90,13 @@ public class NPCPatrolState : NPCState
 
     public override void Update()
     {
+        // Priority: Dialogue first
+        if (DialogueManager.Instance.IsDialoguePlaying && playerInRange)
+        {
+            npcController.npcStateMachine.ChangeState(new NPCTalkingState(owner));
+            return;
+        }
+
         if (npcController.patrolPoints.Length == 0) return;
 
         Transform targetPoint = npcController.patrolPoints[npcController.currentPatrolIndex];
@@ -102,15 +107,12 @@ public class NPCPatrolState : NPCState
         // Check if reached
         if (Vector2.Distance(owner.transform.position, targetPoint.position) < 0.1f)
         {
-            // Go to next point
-            npcController.gameObject.GetComponent<SpriteRenderer>().flipX = !npcController.gameObject.GetComponent<SpriteRenderer>().flipX; // Flip sprite direction
+            npcController.gameObject.GetComponent<SpriteRenderer>().flipX = !npcController.gameObject.GetComponent<SpriteRenderer>().flipX;
+
             npcController.currentPatrolIndex++;
             if (npcController.currentPatrolIndex >= npcController.patrolPoints.Length)
-            {
                 npcController.currentPatrolIndex = 0;
-            }
 
-            // Switch to idle after reaching a point
             npcController.npcStateMachine.ChangeState(new NPCIdleState(owner));
         }
     }
@@ -121,21 +123,31 @@ public class NPCPatrolState : NPCState
     }
 }
 
-public class NPCTalkingState : NPCState //TODO: Implement talking logic
+public class NPCTalkingState : NPCState
 {
+    private RigidbodyConstraints2D originalConstraints;
+
     public NPCTalkingState(GameObject owner) : base(owner) { }
+
     public override void Enter()
     {
         Debug.Log("NPC-Entering Talking State");
-        rb.linearVelocityX = 0; // Stop movement
+        originalConstraints = rb.constraints;
+        rb.constraints = RigidbodyConstraints2D.FreezePosition; // freeze movement
         animator.Play("Idle");
     }
+
     public override void Update()
     {
-        // Logic for talking, e.g., waiting for player input to finish conversation
+        if (!DialogueManager.Instance.IsDialoguePlaying)
+        {
+            npcController.npcStateMachine.ChangeState(new NPCIdleState(owner));
+        }
     }
+
     public override void Exit()
     {
         Debug.Log("NPC-Exiting Talking State");
+        rb.constraints = originalConstraints; // restore previous constraints
     }
 }

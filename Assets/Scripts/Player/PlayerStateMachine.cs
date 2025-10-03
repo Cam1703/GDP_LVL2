@@ -237,7 +237,7 @@ public class TalkState : State
     public override void Enter()
     {
         Debug.Log("Entrando a Talk");
-        rb.linearVelocity = Vector2.zero;
+        rb.constraints = RigidbodyConstraints2D.FreezePosition;
     }
     public override void Update()
     {
@@ -250,5 +250,6 @@ public class TalkState : State
     public override void Exit()
     {
         Debug.Log("Slaiendo a Talk");
+        rb.constraints = RigidbodyConstraints2D.None;
     }
 }

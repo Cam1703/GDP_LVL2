@@ -4,10 +4,12 @@ public class DialogueTrigger : MonoBehaviour
 {
     [Header("Visual Cue")]
     [SerializeField] private GameObject visualCue;
-    private bool playerInRange;
+    public bool playerInRange;
 
     [Header("Ink JSON Asset")]
     [SerializeField] private TextAsset inkJSON;
+
+    [SerializeField] private Language language;
 
 
     private void Awake()
@@ -29,7 +31,7 @@ public class DialogueTrigger : MonoBehaviour
 
             if (InputManager.interact)
             {
-                DialogueManager.Instance.StartDialogue(inkJSON);
+                DialogueManager.Instance.StartDialogue(inkJSON, language);
             }
         }
         else

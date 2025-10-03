@@ -22,6 +22,7 @@ public class DialogueManager : MonoBehaviour
 
     private float lastContinueTime = -999f;
     private float endCooldownTimer = 0f;
+    private Language currentLanguage;
 
     public bool IsDialoguePlaying => isDialoguePlaying;
     public bool CanStartDialogue => !isDialoguePlaying && endCooldownTimer <= 0f;
@@ -78,9 +79,11 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void StartDialogue(TextAsset inkJSON)
+    public void StartDialogue(TextAsset inkJSON, Language language)
     {
         if (!CanStartDialogue) return;
+
+        currentLanguage = language;
 
         if (inkJSON == null)
         {
@@ -102,7 +105,11 @@ public class DialogueManager : MonoBehaviour
         if (currentStory.canContinue)
         {
             currentLine = currentStory.Continue().Trim();
-            if (dialogueText != null) dialogueText.text = currentLine;
+
+            // aplica traducción según nivel de idioma
+            string translatedLine = LanguageSystem.Instance.TranslateLine(currentLine, currentLanguage);
+
+            if (dialogueText != null) dialogueText.text = translatedLine;
             lastContinueTime = Time.time;
         }
         else

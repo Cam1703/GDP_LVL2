@@ -3,9 +3,9 @@ using System.Collections.Generic;
 
 public enum Language
 {
-    Idioma1,
-    Idioma2,
-    Idioma3
+    Language1,
+    Language2,
+    Language3
 }
 
 [System.Serializable]
@@ -39,6 +39,13 @@ public class LanguageSystem : MonoBehaviour
         {
             Destroy(gameObject);
         }
+    }
+
+    private void Start()
+    {
+        languageLevels[Language.Language1]= 0;
+        languageLevels[Language.Language2] = 1;
+        languageLevels[Language.Language3] = 2;
     }
 
 
@@ -83,10 +90,25 @@ public class LanguageSystem : MonoBehaviour
     {
         int level = GetLanguageLevel(language);
 
-        if (level <= 0) return "??? ??? ???";
+        if (level <= 0) return GetObfuscatedText(line);
         if (level == 1) return line.Substring(0, Mathf.Min(line.Length / 3, line.Length)) + "...";
-        if (level == 2) return line.Substring(0, Mathf.Min(line.Length * 2 / 3, line.Length)) + "...";
+        if (level == 2) return line;
         return line;
+    }
+
+    private string GetObfuscatedText(string text)
+    {
+        // Reemplaza cada carácter diferente de espacio con un símbolo de interrogación
+
+        string obfuscated = "";
+        foreach (char c in text)
+        {
+            if (char.IsWhiteSpace(c))
+                obfuscated += c; // mantiene los espacios
+            else
+                obfuscated += "?"; // reemplaza otros caracteres
+        }
+        return obfuscated;
     }
 
     // --- Métodos de guardado y carga ---
