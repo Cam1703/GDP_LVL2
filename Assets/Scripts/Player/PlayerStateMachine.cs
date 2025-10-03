@@ -29,6 +29,10 @@ public abstract class State
         {
             isGrounded = false;
         }
+        if(DialogueManager.Instance.IsDialoguePlaying && !(this is TalkState))
+        {
+            playerController.playerStateMachine.ChangeState(new TalkState(owner));
+        }
     }
     public virtual void Exit() { }
 
@@ -225,4 +229,27 @@ public class FallFastState : FallState
         rb.linearVelocityY = 0f;
     }
    
+}
+
+public class TalkState : State
+{
+    public TalkState(GameObject owner) : base(owner) { }
+    public override void Enter()
+    {
+        Debug.Log("Entrando a Talk");
+        rb.constraints = RigidbodyConstraints2D.FreezePosition;
+    }
+    public override void Update()
+    {
+        base.Update();
+        if (!DialogueManager.Instance.IsDialoguePlaying)
+        {
+            playerController.playerStateMachine.ChangeState(new IdleState(owner));
+        }
+    }
+    public override void Exit()
+    {
+        Debug.Log("Slaiendo a Talk");
+        rb.constraints = RigidbodyConstraints2D.None;
+    }
 }
