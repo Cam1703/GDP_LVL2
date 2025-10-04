@@ -106,7 +106,7 @@ public class LanguageSystem : MonoBehaviour
             if (char.IsWhiteSpace(c))
                 obfuscated += c; // mantiene los espacios
             else
-                obfuscated += "?"; // reemplaza otros caracteres
+                obfuscated += "as"; // reemplaza otros caracteres
         }
         return obfuscated;
     }
