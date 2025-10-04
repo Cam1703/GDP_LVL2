@@ -83,7 +83,7 @@ public class IdleState : State
 
     public override void Enter()
     {
-        Debug.Log("Entrando a Idle");
+        //Debug.Log("Entrando a Idle");
     }
 
     public override void Update()
@@ -102,7 +102,7 @@ public class IdleState : State
 
     public override void Exit()
     {
-        Debug.Log("Slaiendo a Idle");
+        //Debug.Log("Slaiendo a Idle");
     }
 
 }
@@ -114,7 +114,7 @@ public class WalkState : State
 
     public override void Enter()
     {
-        Debug.Log("Entrando a Walk");
+        //Debug.Log("Entrando a Walk");
     }
     public override void Update()
     {
@@ -139,7 +139,7 @@ public class WalkState : State
 
     public override void Exit()
     {
-        Debug.Log("Slaiendo a walk");
+        //Debug.Log("Slaiendo a walk");
     }
 }
 
@@ -155,7 +155,7 @@ public class JumpState : State
 
     public override void Enter()
     {
-        Debug.Log("Entrando a Jump");
+        //Debug.Log("Entrando a Jump");
         jumpTime = 0;
         jumpForce = Mathf.Sqrt(jumpHeight * -2 * (Physics2D.gravity.y * rb.gravityScale));
         rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
@@ -181,7 +181,7 @@ public class JumpState : State
 
     public override void Exit()
     {
-        Debug.Log("Slaiendo a jump");
+        //Debug.Log("Slaiendo a jump");
     }
 }
 
@@ -192,7 +192,7 @@ public class FallState : State
 
     public override void Enter()
     {
-        Debug.Log("Entrando a Fall");
+        //Debug.Log("Entrando a Fall");
     }
     public override void Update()
     {
@@ -212,7 +212,7 @@ public class FallState : State
 
     public override void Exit()
     {
-        Debug.Log("Slaiendo a Fall");
+        //Debug.Log("Slaiendo a Fall");
     }
 }
 

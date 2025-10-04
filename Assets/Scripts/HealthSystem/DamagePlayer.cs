@@ -8,9 +8,9 @@ public class DamagePlayer : MonoBehaviour
     private bool doDamage = true;
     private float cooldown = 2f;
 
-    private void OnTriggerEnter2D(Collider2D other)
+    private void OnCollisionEnter2D(Collision2D other)
     {
-        if(other.CompareTag("Player") && doDamage)
+        if(other.gameObject.CompareTag("Player") && doDamage)
         {
             playerHealth.recieveDamage(1);
             doDamage = false;
