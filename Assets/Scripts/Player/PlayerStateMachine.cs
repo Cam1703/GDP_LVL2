@@ -26,14 +26,14 @@ public abstract class State
         if (Physics2D.Raycast(owner.transform.position, Vector2.down, distanceToCheck, LayerMask.GetMask("Water")))
         {
             isGrounded = true;
+            if (DialogueManager.Instance.IsDialoguePlaying && !(this is TalkState))
+            {
+                playerController.playerStateMachine.ChangeState(new TalkState(owner));
+            }
         }
         else
         {
             isGrounded = false;
-        }
-        if(DialogueManager.Instance.IsDialoguePlaying && !(this is TalkState))
-        {
-            playerController.playerStateMachine.ChangeState(new TalkState(owner));
         }
     }
     public virtual void Exit() { }
