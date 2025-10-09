@@ -4,7 +4,7 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public abstract class State
 {
-    private const float distanceToCheck = 0.1f;
+    private const float distanceToCheck = 0.12f;
     protected GameObject owner;
 
     protected bool isGrounded;
@@ -21,6 +21,8 @@ public abstract class State
     public virtual void Enter() { }
     public virtual void Update() 
     {
+        //Debug.DrawRay(owner.transform.position, Vector3.down * distanceToCheck, Color.black);
+        //Debug.Log(1);
         if (Physics2D.Raycast(owner.transform.position, Vector2.down, distanceToCheck, LayerMask.GetMask("Water")))
         {
             isGrounded = true;
@@ -83,13 +85,16 @@ public class IdleState : State
 
     public override void Enter()
     {
-        //Debug.Log("Entrando a Idle");
+        Debug.Log("Entrando a Idle");
     }
 
     public override void Update()
     {
         base.Update();
-        // Debug.Log("Updating a Idle");
+        //Debug.Log("Updating a Idle");
+
+        //rb.linearVelocity = Vector2.zero;
+
         if (InputManager.movement.x != 0f && isGrounded)
         {
             playerController.playerStateMachine.ChangeState(new WalkState(owner));
@@ -102,7 +107,7 @@ public class IdleState : State
 
     public override void Exit()
     {
-        //Debug.Log("Slaiendo a Idle");
+        Debug.Log("Slaiendo a Idle");
     }
 
 }
@@ -114,7 +119,7 @@ public class WalkState : State
 
     public override void Enter()
     {
-        //Debug.Log("Entrando a Walk");
+        Debug.Log("Entrando a Walk");
     }
     public override void Update()
     {
@@ -122,7 +127,7 @@ public class WalkState : State
         
         UpdateMovementX();
         
-        // Debug.Log("Updating a Idle");
+        //Debug.Log("Updating a Idle");
         if (InputManager.movement.x == 0f && isGrounded)
         {
             playerController.playerStateMachine.ChangeState(new IdleState(owner));
@@ -139,7 +144,7 @@ public class WalkState : State
 
     public override void Exit()
     {
-        //Debug.Log("Slaiendo a walk");
+        Debug.Log("Slaiendo a walk");
     }
 }
 
@@ -155,7 +160,7 @@ public class JumpState : State
 
     public override void Enter()
     {
-        //Debug.Log("Entrando a Jump");
+        Debug.Log("Entrando a Jump");
         jumpTime = 0;
         jumpForce = Mathf.Sqrt(jumpHeight * -2 * (Physics2D.gravity.y * rb.gravityScale));
         rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
@@ -181,7 +186,7 @@ public class JumpState : State
 
     public override void Exit()
     {
-        //Debug.Log("Slaiendo a jump");
+        Debug.Log("Slaiendo a jump");
     }
 }
 
@@ -192,7 +197,7 @@ public class FallState : State
 
     public override void Enter()
     {
-        //Debug.Log("Entrando a Fall");
+        Debug.Log("Entrando a Fall");
     }
     public override void Update()
     {
@@ -212,7 +217,7 @@ public class FallState : State
 
     public override void Exit()
     {
-        //Debug.Log("Slaiendo a Fall");
+        Debug.Log("Slaiendo a Fall");
     }
 }
 
