@@ -20,6 +20,18 @@ public class MenuManager : MonoBehaviour
         }
     }
 
+    private void Update()
+    {
+        if (InputManager.inventoryFlag && !inventory.activeSelf)
+        {
+            OnInventoryButton();
+        }
+        else if (InputManager.inventoryFlag && inventory.activeSelf)
+        {
+            OnPlaySceneButton();
+        }
+    }
+
     public void OnStartButton()
     {
         SceneManager.LoadScene("SampleScene");
