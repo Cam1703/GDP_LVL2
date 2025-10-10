@@ -9,7 +9,7 @@ public class InputManager : MonoBehaviour
     public static bool jump;
     public static bool interact;
     public static bool inventoryFlag;
-
+    public static bool pauseFlag;
 
     private InputAction _moveAction;
     private InputAction _attackAction;
@@ -44,6 +44,7 @@ public class InputManager : MonoBehaviour
         jump = _jumpAction.IsPressed();
         interact = _interactAction.IsPressed();
         inventoryFlag = _inventoryControl.WasPressedThisFrame();
+        pauseFlag = _pauseControl.WasPressedThisFrame();
         //attack = _attackAction.WasPerformedThisFrame();
 
         //menuOpenInput = _menuOpenAction.WasPerformedThisFrame();
