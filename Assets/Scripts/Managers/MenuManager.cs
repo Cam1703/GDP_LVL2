@@ -5,7 +5,10 @@ public class MenuManager : MonoBehaviour
 {
 
     public static MenuManager instance;
-    public GameObject inventory;
+    public GameObject screens;
+
+    public GameObject pauseScreen;
+    public GameObject inventoryScreen;
 
     private void Awake()
     {
@@ -18,6 +21,34 @@ public class MenuManager : MonoBehaviour
         {
             instance = this;
         }
+
+        inventoryScreen = screens.transform.Find("InventoryScreen").gameObject;
+        pauseScreen = screens.transform.Find("PauseScreen").gameObject;
+    }
+
+    private void Update()
+    {
+        if (Time.timeScale != 0.0f)
+        {
+            if (InputManager.inventoryFlag && !inventoryScreen.activeSelf)
+            {
+                ScreenOn(inventoryScreen);
+            }
+            else if (InputManager.inventoryFlag && inventoryScreen.activeSelf)
+            {
+                PlaySceneOn(inventoryScreen);
+            }
+        }
+        if (InputManager.pauseFlag && !pauseScreen.activeSelf)
+        {
+            ScreenOn(pauseScreen);
+            Time.timeScale = 0.0f;
+        }
+        else if (InputManager.pauseFlag && pauseScreen.activeSelf)
+        {
+            PlaySceneOn(pauseScreen);
+            Time.timeScale = 1.0f;
+        }
     }
 
     public void OnStartButton()
@@ -25,14 +56,14 @@ public class MenuManager : MonoBehaviour
         SceneManager.LoadScene("SampleScene");
     }
 
-    public void OnInventoryButton()
+    public void ScreenOn(GameObject screen)
     { 
-        inventory.SetActive(true);
+        screen.SetActive(true);
     }
 
-    public void OnPlaySceneButton()
+    public void PlaySceneOn(GameObject screen)
     {
-        inventory.SetActive(false);
+        screen.SetActive(false);
     }
 
     public void OnQuitButton()
