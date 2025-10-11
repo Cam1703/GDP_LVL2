@@ -636,6 +636,22 @@ PrefabInstance:
       propertyPath: language
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
+      propertyPath: dialogueOptions.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
+      propertyPath: 'dialogueOptions.Array.data[0]'
+      value: 
+      objectReference: {fileID: 4900000, guid: c68582c11e58db24ba78ce6dd9b98bda, type: 3}
+    - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
+      propertyPath: 'dialogueOptions.Array.data[1]'
+      value: 
+      objectReference: {fileID: 4900000, guid: dbe6e37afddd28841be2f594cdeeac27, type: 3}
+    - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
+      propertyPath: 'dialogueOptions.Array.data[2]'
+      value: 
+      objectReference: {fileID: 4900000, guid: 74a2668fbce4c7047b1b3d40adec7d40, type: 3}
     - target: {fileID: 7675691820477795678, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
       propertyPath: m_SortingOrder
       value: 4
@@ -1203,6 +1219,22 @@ PrefabInstance:
       propertyPath: language
       value: 2
       objectReference: {fileID: 0}
+    - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
+      propertyPath: dialogueOptions.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
+      propertyPath: 'dialogueOptions.Array.data[0]'
+      value: 
+      objectReference: {fileID: 4900000, guid: c68582c11e58db24ba78ce6dd9b98bda, type: 3}
+    - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
+      propertyPath: 'dialogueOptions.Array.data[1]'
+      value: 
+      objectReference: {fileID: 4900000, guid: dbe6e37afddd28841be2f594cdeeac27, type: 3}
+    - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
+      propertyPath: 'dialogueOptions.Array.data[2]'
+      value: 
+      objectReference: {fileID: 4900000, guid: 74a2668fbce4c7047b1b3d40adec7d40, type: 3}
     - target: {fileID: 7675691820477795678, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
       propertyPath: m_FlipX
       value: 1
@@ -2216,7 +2248,7 @@ MonoBehaviour:
       m_Calls: []
   m_text: New Text
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 293644d84cbc65844a5cdf2486f42345, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_sharedMaterial: {fileID: 9127513212919007180, guid: 293644d84cbc65844a5cdf2486f42345, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
@@ -2282,7 +2314,7 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_baseMaterial: {fileID: 0}
   m_maskOffset: {x: 0, y: 0, z: 0, w: 0}
 --- !u!222 &1829791704
@@ -2797,6 +2829,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
+      propertyPath: dialogueOptions.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
+      propertyPath: 'dialogueOptions.Array.data[0]'
+      value: 
+      objectReference: {fileID: 4900000, guid: c68582c11e58db24ba78ce6dd9b98bda, type: 3}
+    - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
+      propertyPath: 'dialogueOptions.Array.data[1]'
+      value: 
+      objectReference: {fileID: 4900000, guid: dbe6e37afddd28841be2f594cdeeac27, type: 3}
+    - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
+      propertyPath: 'dialogueOptions.Array.data[2]'
+      value: 
+      objectReference: {fileID: 4900000, guid: 74a2668fbce4c7047b1b3d40adec7d40, type: 3}
     - target: {fileID: 7675691820477795678, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
       propertyPath: m_SortingOrder
       value: 4
