@@ -66,51 +66,7 @@ public class LanguageSystem : MonoBehaviour
         return languageLevels.ContainsKey(language) ? languageLevels[language] : 0;
     }
 
-    /*
-        El TranslateLine toma una línea en el formato "Idioma|Texto" y devuelve el texto traducido
-        según el nivel de conocimiento del idioma del jugador.
-
-        Niveles de conocimiento:
-        0 - No entiende nada: "??? ??? ???"
-        1 - Entiende un poco: muestra el primer tercio del texto seguido de "..."
-        2 - Entiende bastante: muestra los dos tercios del texto seguido de "..."
-        3 - Entiende todo: muestra el texto completo
-
-        Ejemplo:
-        Input: "Idioma 1|Hola, ¿cómo estás?"
-        Nivel de "Idioma 1": 2
-        Output: "Hola, ¿cómo e..."
-
-        Voy a ir mejorando este algoritmo con el tiempo, pero la idea es que el codigo se encargue de 
-        crear la sensación de que el jugador no entiende el idioma sin necesidad de crear múltiples versiones
-        de cada línea de diálogo.
-    */
-
-    public string TranslateLine(string line, Language language)
-    {
-        int level = GetLanguageLevel(language);
-
-        if (level <= 0) return GetObfuscatedText(line);
-        if (level == 1) return line.Substring(0, Mathf.Min(line.Length / 3, line.Length)) + "...";
-        if (level == 2) return line;
-        return line;
-    }
-
-    private string GetObfuscatedText(string text)
-    {
-        // Reemplaza cada carácter diferente de espacio con un símbolo de interrogación
-
-        string obfuscated = "";
-        foreach (char c in text)
-        {
-            if (char.IsWhiteSpace(c))
-                obfuscated += c; // mantiene los espacios
-            else
-                obfuscated += "as"; // reemplaza otros caracteres
-        }
-        return obfuscated;
-    }
-
+    
     // --- Métodos de guardado y carga ---
 
     private void SaveData()
