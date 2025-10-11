@@ -6,11 +6,12 @@ public class DialogueTrigger : MonoBehaviour
     [SerializeField] private GameObject visualCue;
     public bool playerInRange;
 
-    [Header("Ink JSON Asset")]
-    [SerializeField] private TextAsset inkJSON;
+    [Header("Dialogue Options")]
+    [Tooltip("Assign Ink JSONs for each level (e.g., Dialogue_Level0, Dialogue_Level1, Dialogue_Level2...)")]
+    [SerializeField] private TextAsset[] dialogueOptions;
 
-    [SerializeField] private Language language;
-
+    [Header("Language Settings")]
+    [SerializeField] private Language language; // Assigned manually in inspector
 
     private void Awake()
     {
@@ -26,26 +27,51 @@ public class DialogueTrigger : MonoBehaviour
     {
         if (playerInRange && !DialogueManager.Instance.IsDialoguePlaying)
         {
-            // Mostrar cue solo si no hay diálogo activo
             visualCue.SetActive(true);
 
             if (InputManager.interact)
             {
-                DialogueManager.Instance.StartDialogue(inkJSON, language);
+                TextAsset inkJSON = GetDialogueForLevel(language);
+                DialogueManager.Instance.StartDialogue(inkJSON);
             }
         }
         else
         {
-            visualCue.SetActive(false);
+            if (visualCue != null)
+                visualCue.SetActive(false);
         }
+    }
+
+    private TextAsset GetDialogueForLevel(Language lang)
+    {
+        int level = LanguageSystem.Instance.GetLanguageLevel(lang);
+
+        // Try to find an exact level file (e.g., Dialogue_Level2)
+        foreach (var dialogue in dialogueOptions)
+        {
+            if (dialogue.name.EndsWith($"Level{level}"))
+                return dialogue;
+        }
+
+        // Fallback: try lower levels
+        for (int i = level - 1; i >= 0; i--)
+        {
+            foreach (var dialogue in dialogueOptions)
+            {
+                if (dialogue.name.EndsWith($"Level{i}"))
+                    return dialogue;
+            }
+        }
+
+        // Default fallback
+        Debug.LogWarning($"No dialogue found for {lang} Level {level}. Returning first dialogue as fallback.");
+        return dialogueOptions.Length > 0 ? dialogueOptions[0] : null;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
-        {
             playerInRange = true;
-        }
     }
 
     private void OnTriggerExit2D(Collider2D collision)

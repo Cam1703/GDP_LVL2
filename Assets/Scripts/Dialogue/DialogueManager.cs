@@ -79,11 +79,9 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
-    public void StartDialogue(TextAsset inkJSON, Language language)
+    public void StartDialogue(TextAsset inkJSON)
     {
         if (!CanStartDialogue) return;
-
-        currentLanguage = language;
 
         if (inkJSON == null)
         {
@@ -106,10 +104,7 @@ public class DialogueManager : MonoBehaviour
         {
             currentLine = currentStory.Continue().Trim();
 
-            // aplica traducción según nivel de idioma
-            string translatedLine = LanguageSystem.Instance.TranslateLine(currentLine, currentLanguage);
-
-            if (dialogueText != null) dialogueText.text = translatedLine;
+            if (dialogueText != null) dialogueText.text = currentLine;
             lastContinueTime = Time.time;
         }
         else
