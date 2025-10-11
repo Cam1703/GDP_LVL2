@@ -678,6 +678,14 @@ MonoBehaviour:
     m_Y: 0
     m_Width: 845
     m_Height: 1023
+  - m_X: 0
+    m_Y: 104
+    m_Width: 1023
+    m_Height: 919
+  - m_X: 42
+    m_Y: 52
+    m_Width: 981
+    m_Height: 971
   m_FontFeatureTable:
     m_MultipleSubstitutionRecords: []
     m_LigatureSubstitutionRecords: []
