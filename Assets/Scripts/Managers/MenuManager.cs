@@ -8,7 +8,11 @@ public class MenuManager : MonoBehaviour
     public GameObject screens;
 
     public GameObject pauseScreen;
-    public GameObject inventoryScreen;
+    public GameObject inventoryLayout;
+    public GameObject inventoryScreens;
+
+    int screensCount;
+    int selected;
 
     private void Awake()
     {
@@ -22,7 +26,10 @@ public class MenuManager : MonoBehaviour
             instance = this;
         }
 
-        inventoryScreen = screens.transform.Find("InventoryScreen").gameObject;
+        inventoryLayout = screens.transform.Find("InventoryLayout").gameObject;
+        inventoryScreens = inventoryLayout.transform.Find("InveontoryScreens").gameObject;
+        screensCount = inventoryScreens.transform.childCount;
+
         pauseScreen = screens.transform.Find("PauseScreen").gameObject;
     }
 
@@ -30,13 +37,16 @@ public class MenuManager : MonoBehaviour
     {
         if (Time.timeScale != 0.0f)
         {
-            if (InputManager.inventoryFlag && !inventoryScreen.activeSelf)
+            if (InputManager.inventoryFlag && !inventoryLayout.activeSelf)
             {
-                ScreenOn(inventoryScreen);
+                ScreenOn(inventoryLayout);
+                inventoryScreens.transform.GetChild(0).gameObject.SetActive(true);
             }
-            else if (InputManager.inventoryFlag && inventoryScreen.activeSelf)
+            else if (InputManager.inventoryFlag && inventoryLayout.activeSelf)
             {
-                PlaySceneOn(inventoryScreen);
+                PlaySceneOn(inventoryLayout);
+                inventoryScreens.transform.GetChild(selected).gameObject.SetActive(false);
+
             }
         }
         if (InputManager.pauseFlag && !pauseScreen.activeSelf)
@@ -64,6 +74,50 @@ public class MenuManager : MonoBehaviour
     public void PlaySceneOn(GameObject screen)
     {
         screen.SetActive(false);
+    }
+
+    public void InventoryForward()
+    {
+        for (int i = 0; i < screensCount; i++)
+        {
+            //Debug.Log(i);
+            if (inventoryScreens.transform.GetChild(i).gameObject.activeSelf)
+            {
+                inventoryScreens.transform.GetChild(i).gameObject.SetActive(false);
+                if (i < (screensCount - 1))
+                {
+                    selected = i + 1;
+                }
+                else
+                {
+                    selected = 0;   
+                }
+                inventoryScreens.transform.GetChild(selected).gameObject.SetActive(true);
+                break;
+            }
+        }
+    }
+
+    public void InventoryBackward()
+    {
+        for (int i = (screensCount - 1); i >= 0; i--)
+        {
+            //Debug.Log(i);
+            if (inventoryScreens.transform.GetChild(i).gameObject.activeSelf)
+            {
+                inventoryScreens.transform.GetChild(i).gameObject.SetActive(false);
+                if (i > 0 )
+                {
+                    selected = i - 1;
+                }
+                else
+                {
+                    selected = screensCount - 1;
+                }
+                inventoryScreens.transform.GetChild(selected).gameObject.SetActive(true);
+                break;
+            }
+        }
     }
 
     public void OnQuitButton()
