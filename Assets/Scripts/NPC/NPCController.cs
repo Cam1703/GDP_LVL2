@@ -8,6 +8,15 @@ public class NPCController : MonoBehaviour
 
     [HideInInspector] public int currentPatrolIndex = 0;
 
+    private void Awake()
+    {
+        foreach (Transform patrolPoint in patrolPoints)
+        {
+            // hide patrol points in game view
+            patrolPoint.gameObject.GetComponent<SpriteRenderer>().enabled = false;
+        }
+    }
+
     void Start()
     {
         npcStateMachine = new NPCStateMachine();

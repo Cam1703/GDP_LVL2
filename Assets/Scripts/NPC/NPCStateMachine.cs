@@ -86,6 +86,12 @@ public class NPCPatrolState : NPCState
     {
         Debug.Log("NPC-Entering Patrol State");
         animator.Play("Walk");
+
+        // If not enough patrol points, go back to idle
+        if (npcController.patrolPoints == null || npcController.patrolPoints.Length < 2)
+        {
+            npcController.npcStateMachine.ChangeState(new NPCIdleState(owner));
+        }
     }
 
     public override void Update()
@@ -97,17 +103,26 @@ public class NPCPatrolState : NPCState
             return;
         }
 
-        if (npcController.patrolPoints.Length == 0) return;
+        if (npcController.patrolPoints == null || npcController.patrolPoints.Length < 2)
+        {
+            npcController.npcStateMachine.ChangeState(new NPCIdleState(owner));
+            return;
+        }
 
         Transform targetPoint = npcController.patrolPoints[npcController.currentPatrolIndex];
 
-        // Move towards target
-        rb.MovePosition(Vector2.MoveTowards(owner.transform.position, targetPoint.position, npcController.velocity * Time.deltaTime));
+        // Move only along the X axis
+        Vector2 currentPosition = owner.transform.position;
+        Vector2 targetPosition = new Vector2(targetPoint.position.x, currentPosition.y);
 
-        // Check if reached
-        if (Vector2.Distance(owner.transform.position, targetPoint.position) < 0.1f)
+        rb.MovePosition(Vector2.MoveTowards(currentPosition, targetPosition, npcController.velocity * Time.deltaTime));
+
+        // Check if reached horizontally
+        if (Mathf.Abs(currentPosition.x - targetPoint.position.x) < 0.1f)
         {
-            npcController.gameObject.GetComponent<SpriteRenderer>().flipX = !npcController.gameObject.GetComponent<SpriteRenderer>().flipX;
+            // Flip sprite horizontally
+            SpriteRenderer sr = npcController.gameObject.GetComponent<SpriteRenderer>();
+            sr.flipX = !sr.flipX;
 
             npcController.currentPatrolIndex++;
             if (npcController.currentPatrolIndex >= npcController.patrolPoints.Length)
