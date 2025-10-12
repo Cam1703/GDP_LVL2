@@ -8,8 +8,10 @@ public class InputManager : MonoBehaviour
     public static Vector2 movement;
     public static bool jump;
     public static bool interact;
-    public static bool inventoryFlag;
-    public static bool pauseFlag;
+    public static bool inventoryOnFlag;
+    public static bool pauseOnFlag;
+    public static bool inventoryOffFlag;
+    public static bool pauseOffFlag;
 
     private InputAction _moveAction;
     private InputAction _attackAction;
@@ -19,8 +21,10 @@ public class InputManager : MonoBehaviour
     private InputAction _menuCloseAction;
     private InputAction _interactAction;
 
-    private InputAction _inventoryControl;
-    private InputAction _pauseControl;
+    private InputAction _inventoryOnControl;
+    private InputAction _pauseOnControl;
+    private InputAction _inventoryOffControl;
+    private InputAction _pauseOffControl;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
@@ -31,11 +35,15 @@ public class InputManager : MonoBehaviour
         _jumpAction = _playerInput.actions["Jump"];
         _interactAction = _playerInput.actions["Interact"];
 
-        _inventoryControl = _playerInput.actions["Inventory"];
-        _pauseControl = _playerInput.actions["Pause"];
+        _inventoryOnControl = _playerInput.actions["Inventory"];
+        _pauseOnControl = _playerInput.actions["Pause"];
 
-        //_menuOpenAction = _playerInput.actions["MenuOPEN"];
-        //_menuCloseAction = _playerInput.actions["MenuCLOSE"];
+        _playerInput.SwitchCurrentActionMap("UI");
+
+        _inventoryOffControl = _playerInput.actions["Inventory"];
+        _pauseOffControl = _playerInput.actions["Pause"];
+
+        _playerInput.SwitchCurrentActionMap("Player");
     }
 
     private void Update()
@@ -43,11 +51,10 @@ public class InputManager : MonoBehaviour
         movement = _moveAction.ReadValue<Vector2>();
         jump = _jumpAction.IsPressed();
         interact = _interactAction.IsPressed();
-        inventoryFlag = _inventoryControl.WasPressedThisFrame();
-        pauseFlag = _pauseControl.WasPressedThisFrame();
-        //attack = _attackAction.WasPerformedThisFrame();
-
-        //menuOpenInput = _menuOpenAction.WasPerformedThisFrame();
-        //menuCloseInput = _menuCloseAction.WasPerformedThisFrame();
+        
+        inventoryOnFlag = _inventoryOnControl.WasPressedThisFrame();
+        pauseOnFlag = _pauseOnControl.WasPressedThisFrame();
+        inventoryOffFlag = _inventoryOffControl.WasPressedThisFrame();
+        pauseOffFlag = _pauseOffControl.WasPressedThisFrame();
     }
 }
