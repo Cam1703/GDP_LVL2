@@ -37,27 +37,31 @@ public class MenuManager : MonoBehaviour
     {
         if (Time.timeScale != 0.0f)
         {
-            if (InputManager.inventoryFlag && !inventoryLayout.activeSelf)
+            if (InputManager.inventoryOnFlag)
             {
                 ScreenOn(inventoryLayout);
                 inventoryScreens.transform.GetChild(0).gameObject.SetActive(true);
+                InputManager._playerInput.SwitchCurrentActionMap("UI");
             }
-            else if (InputManager.inventoryFlag && inventoryLayout.activeSelf)
+            else if (InputManager.inventoryOffFlag)
             {
                 PlaySceneOn(inventoryLayout);
                 inventoryScreens.transform.GetChild(selected).gameObject.SetActive(false);
-
+                InputManager._playerInput.SwitchCurrentActionMap("Player");
             }
         }
-        if (InputManager.pauseFlag && !pauseScreen.activeSelf)
+        
+        if (InputManager.pauseOnFlag)
         {
             ScreenOn(pauseScreen);
             Time.timeScale = 0.0f;
+            InputManager._playerInput.SwitchCurrentActionMap("UI");
         }
-        else if (InputManager.pauseFlag && pauseScreen.activeSelf)
+        else if (InputManager.pauseOffFlag)
         {
             PlaySceneOn(pauseScreen);
             Time.timeScale = 1.0f;
+            InputManager._playerInput.SwitchCurrentActionMap("Player");
         }
     }
 
