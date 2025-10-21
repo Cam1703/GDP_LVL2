@@ -49,7 +49,7 @@ public class NPCIdleState : NPCState
 
     public override void Enter()
     {
-        Debug.Log("NPC-Entering Idle State");
+        //Debug.Log("NPC-Entering Idle State");
         timer = 0f;
         rb.linearVelocity = Vector2.zero;
         animator.Play("Idle");
@@ -74,7 +74,7 @@ public class NPCIdleState : NPCState
 
     public override void Exit()
     {
-        Debug.Log("NPC-Exiting Idle State");
+        //Debug.Log("NPC-Exiting Idle State");
     }
 }
 
@@ -84,7 +84,7 @@ public class NPCPatrolState : NPCState
 
     public override void Enter()
     {
-        Debug.Log("NPC-Entering Patrol State");
+        //Debug.Log("NPC-Entering Patrol State");
         animator.Play("Walk");
 
         // If not enough patrol points, go back to idle
@@ -134,7 +134,7 @@ public class NPCPatrolState : NPCState
 
     public override void Exit()
     {
-        Debug.Log("NPC-Exiting Patrol State");
+        //Debug.Log("NPC-Exiting Patrol State");
     }
 }
 
@@ -146,7 +146,7 @@ public class NPCTalkingState : NPCState
 
     public override void Enter()
     {
-        Debug.Log("NPC-Entering Talking State");
+        //Debug.Log("NPC-Entering Talking State");
         originalConstraints = rb.constraints;
         rb.constraints = RigidbodyConstraints2D.FreezePosition; // freeze movement
         animator.Play("Idle");
@@ -162,7 +162,7 @@ public class NPCTalkingState : NPCState
 
     public override void Exit()
     {
-        Debug.Log("NPC-Exiting Talking State");
+        //Debug.Log("NPC-Exiting Talking State");
         rb.constraints = originalConstraints; // restore previous constraints
     }
 }

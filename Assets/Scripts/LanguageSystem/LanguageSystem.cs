@@ -19,13 +19,22 @@ public class LanguageData
 public class LanguageSave
 {
     public List<LanguageData> languages = new List<LanguageData>();
+    public int skillPoints;
+    public int experiencePoints;
 }
 
 public class LanguageSystem : MonoBehaviour
 {
     public static LanguageSystem Instance;
-    private Dictionary<Language, int> languageLevels = new Dictionary<Language, int>(); // e.g., {"Idioma 1": 2, "Idioma 2": 1} guarda el idioma y el nivel
-    private const string SaveKey = "LanguageSave"; // clave para almacenar los datos en PlayerPrefs
+
+    private Dictionary<Language, int> languageLevels = new Dictionary<Language, int>();
+    private const string SaveKey = "LanguageSave";
+
+    private int skillPoints = 0;
+    private int experiencePoints = 0;
+
+    // Experiencia necesaria para ganar 1 skill point 
+    private const int ExpPerSkillPoint = 100;
 
     private void Awake()
     {
@@ -33,7 +42,7 @@ public class LanguageSystem : MonoBehaviour
         {
             Instance = this;
             DontDestroyOnLoad(gameObject);
-            LoadData(); // al iniciar, cargamos los datos guardados
+            LoadData();
         }
         else
         {
@@ -46,19 +55,23 @@ public class LanguageSystem : MonoBehaviour
         languageLevels[Language.Language1]= 0;
         languageLevels[Language.Language2] = 1;
         languageLevels[Language.Language3] = 2;
+
+        skillPoints = 2;
+        experiencePoints = 10;
     }
 
+    // ------------------ NIVEL DE IDIOMAS ------------------
 
     public void SetLanguageLevel(Language language, int level)
     {
         languageLevels[language] = level;
-        SaveData(); // guardamos al modificar
+        SaveData();
     }
 
     public void IncreaseLevel(Language language)
     {
         languageLevels[language] = GetLanguageLevel(language) + 1;
-        SaveData(); // guardamos al subir de nivel
+        SaveData();
     }
 
     public int GetLanguageLevel(Language language)
@@ -66,8 +79,46 @@ public class LanguageSystem : MonoBehaviour
         return languageLevels.ContainsKey(language) ? languageLevels[language] : 0;
     }
 
-    
-    // --- Métodos de guardado y carga ---
+    // ------------------ SKILL POINTS Y EXPERIENCIA ------------------
+
+    public int GetSkillPoints() => skillPoints;
+    public int GetExperience() => experiencePoints;
+
+    public void AddExperience(int amount)
+    {
+        experiencePoints += amount;
+        Debug.Log($"Ganaste {amount} XP. Total: {experiencePoints}");
+
+        // Cada vez que se supera el umbral, ganas un skill point
+        while (experiencePoints >= ExpPerSkillPoint)
+        {
+            experiencePoints -= ExpPerSkillPoint;
+            skillPoints++;
+            Debug.Log($"¡Ganaste un Skill Point! Total: {skillPoints}");
+        }
+
+        SaveData();
+    }
+
+    public bool SpendSkillPoint()
+    {
+        if (skillPoints <= 0)
+        {
+            Debug.LogWarning("No tienes suficientes Skill Points.");
+            return false;
+        }
+
+        skillPoints--;
+        SaveData();
+        return true;
+    }
+
+    public int GetExperiencePerSkillPoints()
+    {
+        return ExpPerSkillPoint;
+    }
+
+    // ------------------ GUARDADO ------------------
 
     private void SaveData()
     {
@@ -76,6 +127,9 @@ public class LanguageSystem : MonoBehaviour
         {
             save.languages.Add(new LanguageData { language = pair.Key, level = pair.Value });
         }
+
+        save.skillPoints = skillPoints;
+        save.experiencePoints = experiencePoints;
 
         string json = JsonUtility.ToJson(save);
         PlayerPrefs.SetString(SaveKey, json);
@@ -94,14 +148,18 @@ public class LanguageSystem : MonoBehaviour
             {
                 languageLevels[data.language] = data.level;
             }
+
+            skillPoints = save.skillPoints;
+            experiencePoints = save.experiencePoints;
         }
         else
         {
-            // Inicializa todos los idiomas en nivel 0 si no hay datos guardados
             foreach (Language lang in System.Enum.GetValues(typeof(Language)))
             {
                 languageLevels[lang] = 0;
             }
+            skillPoints = 0;
+            experiencePoints = 0;
             SaveData();
         }
     }
