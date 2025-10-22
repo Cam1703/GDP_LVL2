@@ -3585,9 +3585,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   screens: {fileID: 1568186827527587221}
-  pauseScreen: {fileID: 0}
-  inventoryLayout: {fileID: 0}
-  inventoryScreens: {fileID: 0}
+  forward: {fileID: 1736047593284132982}
+  backward: {fileID: 4584096508675986620}
 --- !u!1 &7493781221703179638
 GameObject:
   m_ObjectHideFlags: 0

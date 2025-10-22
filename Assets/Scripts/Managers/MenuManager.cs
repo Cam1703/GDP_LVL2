@@ -1,16 +1,23 @@
 using UnityEngine;
+using UnityEngine.EventSystems;
+using UnityEngine.InputSystem.Controls;
 using UnityEngine.SceneManagement;
-
+using UnityEngine.UI;
 public class MenuManager : MonoBehaviour
 {
 
     public static MenuManager instance;
     public GameObject screens;
 
-    public GameObject pauseScreen;
-    public GameObject inventoryLayout;
-    public GameObject inventoryScreens;
+    private GameObject pauseScreen;
+    private GameObject inventoryLayout;
+    private GameObject inventoryScreens;
 
+    public GameObject forward;
+    public GameObject backward;
+
+    float buttonCooldown;
+    const float buttonThreshold = 0.4f;
     int screensCount;
     int selected;
 
@@ -42,12 +49,33 @@ public class MenuManager : MonoBehaviour
                 ScreenOn(inventoryLayout);
                 inventoryScreens.transform.GetChild(0).gameObject.SetActive(true);
                 InputManager._playerInput.SwitchCurrentActionMap("UI");
+                buttonCooldown = buttonThreshold + 0.1f;
             }
             else if (InputManager.inventoryOffFlag)
             {
                 PlaySceneOn(inventoryLayout);
                 inventoryScreens.transform.GetChild(selected).gameObject.SetActive(false);
                 InputManager._playerInput.SwitchCurrentActionMap("Player");
+            }
+            else if (inventoryLayout.activeSelf)
+            {
+                if (buttonCooldown > buttonThreshold)
+                {
+                    if (EventSystem.current.currentSelectedGameObject == forward && InputManager.navigation.x == 1)
+                    {
+                        buttonCooldown = 0.0f;
+                        InventoryForward();
+                    }
+                    else if (EventSystem.current.currentSelectedGameObject == backward && InputManager.navigation.x == -1)
+                    {
+                        buttonCooldown = 0.0f;
+                        InventoryBackward();
+                    }
+                }
+                else
+                {
+                    buttonCooldown += Time.deltaTime;
+                }
             }
         }
         

@@ -426,6 +426,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 167985053113743335, guid: dc346912a8d230149ad913919a9f593f, type: 3}
+      propertyPath: forward
+      value: 
+      objectReference: {fileID: 861241234}
+    - target: {fileID: 167985053113743335, guid: dc346912a8d230149ad913919a9f593f, type: 3}
+      propertyPath: backward
+      value: 
+      objectReference: {fileID: 856407285}
+    - target: {fileID: 745166369067281272, guid: dc346912a8d230149ad913919a9f593f, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 745166369067281272, guid: dc346912a8d230149ad913919a9f593f, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.g
+      value: 0.5490196
+      objectReference: {fileID: 0}
+    - target: {fileID: 745166369067281272, guid: dc346912a8d230149ad913919a9f593f, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.r
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3578640531658215563, guid: dc346912a8d230149ad913919a9f593f, type: 3}
       propertyPath: m_LocalPosition.x
       value: 59.48211
@@ -469,6 +489,18 @@ PrefabInstance:
     - target: {fileID: 3668056097852140207, guid: dc346912a8d230149ad913919a9f593f, type: 3}
       propertyPath: m_Name
       value: Managers
+      objectReference: {fileID: 0}
+    - target: {fileID: 7597795179455399967, guid: dc346912a8d230149ad913919a9f593f, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.b
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7597795179455399967, guid: dc346912a8d230149ad913919a9f593f, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.g
+      value: 0.5490196
+      objectReference: {fileID: 0}
+    - target: {fileID: 7597795179455399967, guid: dc346912a8d230149ad913919a9f593f, type: 3}
+      propertyPath: m_Colors.m_SelectedColor.r
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -684,6 +716,16 @@ PrefabInstance:
 MeshRenderer:
   m_CorrespondingSourceObject: {fileID: 2332928440928470486, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
   m_PrefabInstance: {fileID: 849758880}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &856407285 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4584096508675986620, guid: dc346912a8d230149ad913919a9f593f, type: 3}
+  m_PrefabInstance: {fileID: 734643148}
+  m_PrefabAsset: {fileID: 0}
+--- !u!1 &861241234 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1736047593284132982, guid: dc346912a8d230149ad913919a9f593f, type: 3}
+  m_PrefabInstance: {fileID: 734643148}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1038343822
 GameObject:
@@ -1888,7 +1930,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c392e42b5098c458856cdf6ecaaaa1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_FirstSelected: {fileID: 0}
+  m_FirstSelected: {fileID: 861241234}
   m_sendNavigationEvents: 1
   m_DragThreshold: 10
 --- !u!4 &1498191424
