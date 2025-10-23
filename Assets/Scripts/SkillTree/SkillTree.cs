@@ -12,6 +12,7 @@ public class SkillTree : MonoBehaviour
 
     [Header("Botones de opciones (3 botones)")]
     [SerializeField] private Button[] optionButtons;
+    [SerializeField] private Sprite[] optionButtonsImage;
     private Button currentSelected;
 
     [Header("Construcción de Panel")]
@@ -114,13 +115,13 @@ public class SkillTree : MonoBehaviour
         switch (language)
         {
             case Language.Language1:
-                iconImage.color = Color.red;
+                iconImage.sprite = optionButtonsImage[0];
                 break;
             case Language.Language2:
-                iconImage.color = Color.green;
+                iconImage.sprite = optionButtonsImage[1];
                 break;
             case Language.Language3:
-                iconImage.color = Color.blue;
+                iconImage.sprite = optionButtonsImage[2];
                 break;
         }
     }
