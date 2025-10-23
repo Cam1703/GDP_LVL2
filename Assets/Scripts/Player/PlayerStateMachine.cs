@@ -4,18 +4,22 @@ using static UnityEngine.RuleTile.TilingRuleOutput;
 
 public abstract class State
 {
-    private const float distanceToCheck = 0.12f;
+    private const float distanceToCheck = 0.05f;
     protected GameObject owner;
 
     protected bool isGrounded;
     protected Rigidbody2D rb;
     protected PlayerController playerController;
+    protected Animator animator;
+    protected SpriteRenderer spriteRenderer;
 
     public State(GameObject owner)
     {
         this.owner = owner;
         this.rb = owner.GetComponent<Rigidbody2D>();
         this.playerController = owner.GetComponent<PlayerController>();
+        this.animator = owner.GetComponent<Animator>();
+        this.spriteRenderer = owner.GetComponent<SpriteRenderer>();
     }
 
     public virtual void Enter()
@@ -27,9 +31,13 @@ public abstract class State
 
     public virtual void Update()
     {
+        Gizmos.color = Color.red;
+        Debug.DrawLine(owner.transform.position, owner.transform.position + Vector3.down * distanceToCheck);
+
         if (Physics2D.Raycast(owner.transform.position, Vector2.down, distanceToCheck, LayerMask.GetMask("Water")))
         {
             isGrounded = true;
+
             if (DialogueManager.Instance.IsDialoguePlaying && !(this is TalkState))
             {
                 playerController.playerStateMachine.ChangeState(new TalkState(owner));
@@ -48,6 +56,9 @@ public abstract class State
         if (InputManager.movement.x != 0f)
         {
             rb.linearVelocityX = Mathf.Sign(InputManager.movement.x) * playerController.velocity;
+
+            //Voltea el sprite según la dirección
+            spriteRenderer.flipX = InputManager.movement.x < 0f;
         }
         else
         {
@@ -91,6 +102,7 @@ public class IdleState : State
     public override void Enter()
     {
         base.Enter();
+        animator.Play("Idle");
         Debug.Log("Entrando a Idle");
     }
 
@@ -121,6 +133,7 @@ public class WalkState : State
     public override void Enter()
     {
         base.Enter();
+        animator.Play("Caminata");
         Debug.Log("Entrando a Walk");
     }
 
@@ -241,6 +254,7 @@ public class TalkState : State
     public override void Enter()
     {
         base.Enter();
+        animator.Play("Idle");
         Debug.Log("Entrando a Talk");
         rb.constraints = RigidbodyConstraints2D.FreezePosition | RigidbodyConstraints2D.FreezeRotation;
     }
@@ -248,6 +262,7 @@ public class TalkState : State
     public override void Update()
     {
         base.Update();
+
         if (!DialogueManager.Instance.IsDialoguePlaying)
         {
             playerController.playerStateMachine.ChangeState(new IdleState(owner));
