@@ -12,6 +12,7 @@ public class InputManager : MonoBehaviour
     public static bool pauseOnFlag;
     public static bool inventoryOffFlag;
     public static bool pauseOffFlag;
+    public static Vector2 navigation;
 
     private InputAction _moveAction;
     private InputAction _attackAction;
@@ -25,6 +26,8 @@ public class InputManager : MonoBehaviour
     private InputAction _pauseOnControl;
     private InputAction _inventoryOffControl;
     private InputAction _pauseOffControl;
+    private InputAction _navigationControl;
+
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     private void Awake()
@@ -42,6 +45,7 @@ public class InputManager : MonoBehaviour
 
         _inventoryOffControl = _playerInput.actions["Inventory"];
         _pauseOffControl = _playerInput.actions["Pause"];
+        _navigationControl = _playerInput.actions["Navigate"];
 
         _playerInput.SwitchCurrentActionMap("Player");
     }
@@ -56,5 +60,6 @@ public class InputManager : MonoBehaviour
         pauseOnFlag = _pauseOnControl.WasPressedThisFrame();
         inventoryOffFlag = _inventoryOffControl.WasPressedThisFrame();
         pauseOffFlag = _pauseOffControl.WasPressedThisFrame();
+        navigation = _navigationControl.ReadValue<Vector2>();
     }
 }
