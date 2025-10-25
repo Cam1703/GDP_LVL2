@@ -101,10 +101,6 @@ public class MenuManager : MonoBehaviour
                 {
                     buttonCooldown += Time.deltaTime;
                 }
-                if (languageScreen.activeSelf && buttons.activeSelf)
-                {
-                    buttons.SetActive(false);
-                }
             }
         }
         
