@@ -16,12 +16,15 @@ public class MenuManager : MonoBehaviour
     public GameObject forward;
     public GameObject backward;
 
-    float buttonCooldown;
-    const float buttonThreshold = 0.4f;
-    int screensCount;
-    int selected;
+    public GameObject languageScreen;
+    public GameObject buttons;
 
-    public GameObject nowButton = null;
+    private float buttonCooldown;
+    private const float buttonThreshold = 0.4f;
+    private int screensCount;
+    private int selected;
+
+    private GameObject nowButton = null;
     private Vector3 nowScale = Vector3.one;
     private const float selectionScaleFactor = 1.2f;
     private GameObject initialButton;
@@ -44,7 +47,8 @@ public class MenuManager : MonoBehaviour
 
         pauseScreen = screens.transform.Find("PauseScreen").gameObject;
         initialButton = EventSystem.current.firstSelectedGameObject;
-        //Debug.Log(initialButton);
+        
+        buttons = inventoryLayout.transform.Find("Buttons").gameObject;
     }
 
     private void Update()
@@ -79,7 +83,7 @@ public class MenuManager : MonoBehaviour
 
             }
             else if (inventoryLayout.activeSelf)
-            {
+            {   
                 if (buttonCooldown > buttonThreshold)
                 {
                     if (EventSystem.current.currentSelectedGameObject == forward && InputManager.navigation.x == 1)
@@ -96,6 +100,10 @@ public class MenuManager : MonoBehaviour
                 else
                 {
                     buttonCooldown += Time.deltaTime;
+                }
+                if (languageScreen.activeSelf && buttons.activeSelf)
+                {
+                    buttons.SetActive(false);
                 }
             }
         }

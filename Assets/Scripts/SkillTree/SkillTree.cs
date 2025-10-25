@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using UnityEngine.EventSystems;
 
 public class SkillTree : MonoBehaviour
 {
@@ -66,6 +67,8 @@ public class SkillTree : MonoBehaviour
 
     void DisableShowLanguagePanel()
     {
+        MenuManager.instance.buttons.SetActive(true);
+        EventSystem.current.SetSelectedGameObject(currentSelected.gameObject);
         selectedLanguagePanel.SetActive(false);
     }
 
