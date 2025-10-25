@@ -34,6 +34,10 @@ public abstract class State
         Gizmos.color = Color.red;
         Debug.DrawLine(owner.transform.position, owner.transform.position + Vector3.down * distanceToCheck);
 
+        if(InputManager.attack)
+        {
+            playerController.playerStateMachine.ChangeState(new AttackState(owner));
+        }
         if (Physics2D.Raycast(owner.transform.position, Vector2.down, distanceToCheck, LayerMask.GetMask("Water")))
         {
             isGrounded = true;
@@ -275,3 +279,60 @@ public class TalkState : State
         rb.constraints = RigidbodyConstraints2D.FreezeRotation;
     }
 }
+
+public class AttackState : State
+{
+    private bool hasAttacked;
+
+    public AttackState(GameObject owner) : base(owner) { }
+
+    public override void Enter()
+    {
+        base.Enter();
+        animator.Play("Attack");
+        hasAttacked = false;
+        Debug.Log("Entrando a Attack");
+    }
+
+    public override void Update()
+    {
+        var stateInfo = animator.GetCurrentAnimatorStateInfo(0);
+
+        // Realiza el golpe una vez, a mitad de la animación
+        if (!hasAttacked && stateInfo.normalizedTime >= 0.5f)
+        {
+            hasAttacked = true;
+            DoAttack();
+        }
+
+        // Cuando termina la animación, vuelve a Idle
+        if (stateInfo.normalizedTime >= 1f)
+        {
+            playerController.playerStateMachine.ChangeState(new IdleState(owner));
+        }
+    }
+
+    private void DoAttack()
+    {
+        Collider2D[] hitEnemies = Physics2D.OverlapCircleAll(
+            playerController.attackpoint.position,
+            playerController.attackRange,
+            playerController.enemy
+        );
+
+        foreach (Collider2D enemy in hitEnemies)
+        {
+            var health = enemy.GetComponent<Health>();
+            if (health != null)
+                health.ChangeHealth(-playerController.attackDamage);
+        }
+
+        Debug.Log("Ataque ejecutado");
+    }
+
+    public override void Exit()
+    {
+        Debug.Log("Saliendo de Attack");
+    }
+}
+

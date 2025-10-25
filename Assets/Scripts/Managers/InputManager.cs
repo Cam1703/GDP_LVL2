@@ -12,6 +12,7 @@ public class InputManager : MonoBehaviour
     public static bool pauseOnFlag;
     public static bool inventoryOffFlag;
     public static bool pauseOffFlag;
+    public static bool attack;
     public static Vector2 navigation;
 
     private InputAction _moveAction;
@@ -55,7 +56,8 @@ public class InputManager : MonoBehaviour
         movement = _moveAction.ReadValue<Vector2>();
         jump = _jumpAction.IsPressed();
         interact = _interactAction.IsPressed();
-        
+        attack = _attackAction.IsPressed();
+
         inventoryOnFlag = _inventoryOnControl.WasPressedThisFrame();
         pauseOnFlag = _pauseOnControl.WasPressedThisFrame();
         inventoryOffFlag = _inventoryOffControl.WasPressedThisFrame();
