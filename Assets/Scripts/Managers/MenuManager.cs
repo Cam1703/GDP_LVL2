@@ -21,6 +21,11 @@ public class MenuManager : MonoBehaviour
     int screensCount;
     int selected;
 
+    public GameObject nowButton = null;
+    private Vector3 nowScale = Vector3.one;
+    private const float selectionScaleFactor = 1.2f;
+    private GameObject initialButton;
+
     private void Awake()
     {
 
@@ -38,10 +43,23 @@ public class MenuManager : MonoBehaviour
         screensCount = inventoryScreens.transform.childCount;
 
         pauseScreen = screens.transform.Find("PauseScreen").gameObject;
+        initialButton = EventSystem.current.firstSelectedGameObject;
+        //Debug.Log(initialButton);
     }
 
     private void Update()
     {
+        if (EventSystem.current.currentSelectedGameObject != nowButton)
+        {
+            if (nowButton != null)
+            {
+                nowButton.transform.localScale = nowScale;
+            }
+            nowButton = EventSystem.current.currentSelectedGameObject;
+            nowScale = nowButton.transform.localScale;
+            nowButton.transform.localScale *= selectionScaleFactor;
+        }
+
         if (Time.timeScale != 0.0f)
         {
             if (InputManager.inventoryOnFlag)
@@ -49,13 +67,16 @@ public class MenuManager : MonoBehaviour
                 ScreenOn(inventoryLayout);
                 inventoryScreens.transform.GetChild(0).gameObject.SetActive(true);
                 InputManager._playerInput.SwitchCurrentActionMap("UI");
+
                 buttonCooldown = buttonThreshold + 0.1f;
+                EventSystem.current.SetSelectedGameObject(initialButton);
             }
             else if (InputManager.inventoryOffFlag)
             {
                 PlaySceneOn(inventoryLayout);
                 inventoryScreens.transform.GetChild(selected).gameObject.SetActive(false);
                 InputManager._playerInput.SwitchCurrentActionMap("Player");
+
             }
             else if (inventoryLayout.activeSelf)
             {
