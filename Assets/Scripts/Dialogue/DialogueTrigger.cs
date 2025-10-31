@@ -13,6 +13,10 @@ public class DialogueTrigger : MonoBehaviour
     [Header("Language Settings")]
     [SerializeField] private Language language; // Assigned manually in inspector
 
+    [Header("Character")]
+    [SerializeField] private Sprite[] portraits;
+    [SerializeField] private string characterName;
+
     private void Awake()
     {
         if (visualCue != null)

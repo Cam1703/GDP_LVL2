@@ -1,3 +1,3 @@
-Hello World
+Hello World #speaker:Senora #portrait:Senora
 How are you?
-Texto texto 
+Texto texto  #speaker:Angel #portrait:Angel_Molesto
