@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using Ink.Runtime;
 using UnityEngine.UI;
+using System.Collections.Generic;
 
 public class DialogueManager : MonoBehaviour
 {
@@ -10,11 +11,13 @@ public class DialogueManager : MonoBehaviour
     [Header("Dialogue UI")]
     [SerializeField] private GameObject dialoguePanel;
     [SerializeField] private TextMeshProUGUI dialogueText;
+    [SerializeField] private TextMeshProUGUI speakerNameText;
+    [SerializeField] private Image portraitImage;
     [SerializeField] private Image continueIcon;
 
     [Header("Dialogue Settings")]
-    [SerializeField] private float continueCooldown = 0.25f;   // tiempo mínimo entre avances
-    [SerializeField] private float endCooldownDuration = 1.0f; // cooldown después de terminar diálogo
+    [SerializeField] private float continueCooldown = 0.25f;   // time between skips
+    [SerializeField] private float endCooldownDuration = 1.0f; // cooldown after dialogue ends
 
     private Story currentStory;
     private bool isDialoguePlaying;
@@ -22,7 +25,6 @@ public class DialogueManager : MonoBehaviour
 
     private float lastContinueTime = -999f;
     private float endCooldownTimer = 0f;
-    private Language currentLanguage;
 
     public bool IsDialoguePlaying => isDialoguePlaying;
     public bool CanStartDialogue => !isDialoguePlaying && endCooldownTimer <= 0f;
@@ -66,13 +68,13 @@ public class DialogueManager : MonoBehaviour
 
     private void Update()
     {
-        // decrementa cooldown final
+        // Handle post-dialogue cooldown
         if (endCooldownTimer > 0f)
             endCooldownTimer -= Time.deltaTime;
 
         if (!isDialoguePlaying) return;
 
-        // input para avanzar
+        // Input for advancing dialogue
         if (InputManager.interact && Time.time - lastContinueTime >= continueCooldown)
         {
             ContinueStory();
@@ -85,13 +87,15 @@ public class DialogueManager : MonoBehaviour
 
         if (inkJSON == null)
         {
-            Debug.LogWarning("DialogueManager: inkJSON es null.");
+            Debug.LogWarning("DialogueManager: inkJSON is null.");
             return;
         }
 
         currentStory = new Story(inkJSON.text);
         isDialoguePlaying = true;
-        if (dialoguePanel != null) dialoguePanel.SetActive(true);
+
+        if (dialoguePanel != null)
+            dialoguePanel.SetActive(true);
 
         ContinueStory();
     }
@@ -104,7 +108,12 @@ public class DialogueManager : MonoBehaviour
         {
             currentLine = currentStory.Continue().Trim();
 
-            if (dialogueText != null) dialogueText.text = currentLine;
+            // Handle Ink tags (like #speaker:Name, #portrait:SpriteName)
+            HandleTags(currentStory.currentTags);
+
+            if (dialogueText != null)
+                dialogueText.text = currentLine;
+
             lastContinueTime = Time.time;
         }
         else
@@ -113,14 +122,61 @@ public class DialogueManager : MonoBehaviour
         }
     }
 
+    private void HandleTags(List<string> currentTags)
+    {
+        foreach (string tag in currentTags)
+        {
+            string[] splitTag = tag.Split(':');
+            if (splitTag.Length != 2) continue;
+
+            string tagKey = splitTag[0].Trim();
+            string tagValue = splitTag[1].Trim();
+
+            switch (tagKey)
+            {
+                case "speaker":
+                    if (speakerNameText != null)
+                        speakerNameText.text = tagValue;
+                    break;
+
+                case "portrait":
+                    if (portraitImage != null)
+                    {
+                        // Load portrait sprite dynamically from Resources/Portraits
+                        Sprite loaded = Resources.Load<Sprite>($"Portraits/{tagValue}");
+                        if (loaded != null)
+                        {
+                            portraitImage.sprite = loaded;
+                            portraitImage.enabled = true;
+                        }
+                        else
+                        {
+                            Debug.LogWarning($"DialogueManager: Portrait sprite '{tagValue}' not found in Resources/Portraits.");
+                        }
+                    }
+                    break;
+
+                default:
+                    Debug.Log($"DialogueManager: Unknown tag '{tagKey}:{tagValue}'");
+                    break;
+            }
+        }
+    }
+
     private void EndDialogue()
     {
         isDialoguePlaying = false;
-        if (dialoguePanel != null) dialoguePanel.SetActive(false);
-        if (dialogueText != null) dialogueText.text = "";
-        currentStory = null;
 
-        // inicia cooldown post-diálogo
+        if (dialoguePanel != null)
+            dialoguePanel.SetActive(false);
+
+        if (dialogueText != null)
+            dialogueText.text = "";
+
+        if (speakerNameText != null)
+            speakerNameText.text = "";
+
+        currentStory = null;
         endCooldownTimer = endCooldownDuration;
     }
 }
