@@ -32,4 +32,12 @@ public class Enemy : MonoBehaviour
     {
         spriteRenderer.color = Color.white;
     }
+
+
+}
+
+enum EnemyType
+{
+    Sapo,
+    Mosca
 }
