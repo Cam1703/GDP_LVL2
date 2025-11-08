@@ -7,6 +7,7 @@ public class InputManager : MonoBehaviour
     public static PlayerInput _playerInput;
     public static Vector2 movement;
     public static bool jump;
+    public static bool jumpEnter;
     public static bool interact;
     public static bool inventoryOnFlag;
     public static bool pauseOnFlag;
@@ -55,6 +56,8 @@ public class InputManager : MonoBehaviour
     {
         movement = _moveAction.ReadValue<Vector2>();
         jump = _jumpAction.IsPressed();
+        jumpEnter = _jumpAction.WasPressedThisFrame();
+
         interact = _interactAction.IsPressed();
         attack = _attackAction.IsPressed();
 
