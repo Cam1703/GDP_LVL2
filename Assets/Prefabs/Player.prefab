@@ -121,7 +121,7 @@ SpriteRenderer:
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
-  m_Size: {x: 0.16, y: 0.16}
+  m_Size: {x: 0.32, y: 1.88}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
   m_WasSpriteAssigned: 1
@@ -173,6 +173,10 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 0
   attackpoint: {fileID: 6249302977713222920}
+  health: {fileID: 0}
+  spriteRenderer: {fileID: 0}
+  contactDamage: 1
+  damageCooldown: 1
 --- !u!114 &2466047895903808356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -226,7 +230,7 @@ BoxCollider2D:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.49999997, y: -0.026595745}
     oldSize: {x: 0.32, y: 1.88}
-    newSize: {x: 0.16, y: 0.16}
+    newSize: {x: 0.32, y: 1.88}
     adaptiveTilingThreshold: 0.5
     drawMode: 0
     adaptiveTiling: 0

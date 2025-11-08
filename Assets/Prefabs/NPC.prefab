@@ -228,6 +228,8 @@ MonoBehaviour:
   - {fileID: 4900000, guid: dbe6e37afddd28841be2f594cdeeac27, type: 3}
   - {fileID: 4900000, guid: 74a2668fbce4c7047b1b3d40adec7d40, type: 3}
   language: 0
+  portraits: []
+  characterName: 
 --- !u!23 &539129524644777179
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -718,7 +720,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  - {fileID: 8067494877953886839, guid: a9056cbe7283ab54b8e64a8168405dc1, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -763,8 +765,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: Press Z to interact
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: a9056cbe7283ab54b8e64a8168405dc1, type: 2}
+  m_sharedMaterial: {fileID: 8067494877953886839, guid: a9056cbe7283ab54b8e64a8168405dc1, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
