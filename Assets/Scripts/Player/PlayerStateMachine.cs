@@ -7,7 +7,9 @@ public abstract class State
     private const float distanceToCheck = 0.05f;
     protected GameObject owner;
 
+    protected float velocityScale;
     protected bool isGrounded;
+    protected bool isDashing;
     protected Rigidbody2D rb;
     protected PlayerController playerController;
     protected Animator animator;
@@ -20,6 +22,7 @@ public abstract class State
         this.playerController = owner.GetComponent<PlayerController>();
         this.animator = owner.GetComponent<Animator>();
         this.spriteRenderer = owner.GetComponent<SpriteRenderer>();
+        this.velocityScale = 1f;
     }
 
     public virtual void Enter()
@@ -60,7 +63,7 @@ public abstract class State
     {
         if (InputManager.movement.x != 0f)
         {
-            rb.linearVelocityX = Mathf.Sign(InputManager.movement.x) * playerController.velocity;
+            rb.linearVelocityX = Mathf.Sign(InputManager.movement.x) * playerController.velocity * velocityScale;
 
             //Voltea el sprite según la dirección
             spriteRenderer.flipX = InputManager.movement.x < 0f;
@@ -160,6 +163,10 @@ public class WalkState : State
         {
             playerController.playerStateMachine.ChangeState(new FallState(owner));
         }
+        if (InputManager.sprint && velocityScale == 1f)
+        {
+            playerController.playerStateMachine.ChangeState(new DashState(owner));
+        }
     }
 
     public override void Exit()
@@ -167,6 +174,18 @@ public class WalkState : State
         Debug.Log("Saliendo de Walk");
     }
 }
+
+public class DashState : WalkState
+{
+    public DashState(GameObject owner) : base(owner) { }
+
+    public override void Enter()
+    {
+        base.Enter();
+        velocityScale = 2f;
+    }
+}
+
 
 public class JumpState : State
 {

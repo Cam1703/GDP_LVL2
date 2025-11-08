@@ -6,6 +6,7 @@ public class InputManager : MonoBehaviour
 
     public static PlayerInput _playerInput;
     public static Vector2 movement;
+    public static bool sprint;
     public static bool jump;
     public static bool jumpEnter;
     public static bool interact;
@@ -17,6 +18,7 @@ public class InputManager : MonoBehaviour
     public static Vector2 navigation;
 
     private InputAction _moveAction;
+    private InputAction _sprintAction;
     private InputAction _attackAction;
     private InputAction _jumpAction;
 
@@ -36,6 +38,7 @@ public class InputManager : MonoBehaviour
     {
         _playerInput = GetComponent<PlayerInput>();
         _moveAction = _playerInput.actions["Move"];
+        _sprintAction = _playerInput.actions["Sprint"];
         _attackAction = _playerInput.actions["Attack"];
         _jumpAction = _playerInput.actions["Jump"];
         _interactAction = _playerInput.actions["Interact"];
@@ -55,6 +58,7 @@ public class InputManager : MonoBehaviour
     private void Update()
     {
         movement = _moveAction.ReadValue<Vector2>();
+        sprint = _sprintAction.IsPressed();
         jump = _jumpAction.IsPressed();
         jumpEnter = _jumpAction.WasPressedThisFrame();
 
