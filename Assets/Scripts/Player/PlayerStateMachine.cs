@@ -142,7 +142,7 @@ public class WalkState : State
     public override void Enter()
     {
         base.Enter();
-        animator.Play("Caminata");
+        animator.Play("correr");
         Debug.Log("Entrando a Walk");
     }
 
@@ -199,10 +199,12 @@ public class JumpState : State
     public override void Enter()
     {
         base.Enter();
+        animator.Play("salto");
         Debug.Log("Entrando a Jump");
         jumpTime = 0;
         jumpForce = Mathf.Sqrt(jumpHeight * -2 * (Physics2D.gravity.y * rb.gravityScale));
         rb.AddForce(new Vector2(0, jumpForce), ForceMode2D.Impulse);
+        animator.Play("en el aire");
     }
 
     public override void Update()
@@ -237,6 +239,7 @@ public class FallState : State
     public override void Enter()
     {
         base.Enter();
+        animator.Play("descenso");
         Debug.Log("Entrando a Fall");
     }
 
@@ -315,7 +318,7 @@ public class AttackState : State
     public override void Enter()
     {
         base.Enter();
-        animator.Play("Attack");
+        animator.Play("ataque");
         hasAttacked = false;
         Debug.Log("Entrando a Attack");
     }
