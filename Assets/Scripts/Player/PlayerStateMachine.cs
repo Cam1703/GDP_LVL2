@@ -41,6 +41,7 @@ public abstract class State
         if (Physics2D.Raycast(owner.transform.position, Vector2.down, distanceToCheck, LayerMask.GetMask("Water")))
         {
             isGrounded = true;
+            playerController.playerStateMachine.isDouble = false; 
 
             if (DialogueManager.Instance.IsDialoguePlaying && !(this is TalkState))
             {
@@ -74,6 +75,7 @@ public abstract class State
 public class StateMachine
 {
     public State CurrentState { get; private set; }
+    public bool isDouble = false;
 
     public void ChangeState(State newState)
     {
@@ -118,7 +120,7 @@ public class IdleState : State
         {
             playerController.playerStateMachine.ChangeState(new WalkState(owner));
         }
-        if (InputManager.jump && isGrounded)
+        if (InputManager.jumpEnter && isGrounded)
         {
             playerController.playerStateMachine.ChangeState(new JumpState(owner));
         }
@@ -150,7 +152,7 @@ public class WalkState : State
         {
             playerController.playerStateMachine.ChangeState(new IdleState(owner));
         }
-        if (InputManager.jump && isGrounded)
+        if (InputManager.jumpEnter && isGrounded)
         {
             playerController.playerStateMachine.ChangeState(new JumpState(owner));
         }
@@ -231,6 +233,11 @@ public class FallState : State
         if (InputManager.movement.x == 0 && isGrounded)
         {
             playerController.playerStateMachine.ChangeState(new IdleState(owner));
+        }
+        if (InputManager.jumpEnter && !playerController.playerStateMachine.isDouble)
+        {
+            playerController.playerStateMachine.isDouble = true;
+            playerController.playerStateMachine.ChangeState(new JumpState(owner));
         }
     }
 
