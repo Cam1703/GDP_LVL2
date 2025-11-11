@@ -11,6 +11,7 @@ public class MainManager : MonoBehaviour
 
     void Awake()
     {
+        Application.targetFrameRate = 40;
         if (instance != null && instance != this)
         {
             Destroy(this);

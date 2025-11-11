@@ -36,7 +36,7 @@ public class Enemy : MonoBehaviour
 
 }
 
-enum EnemyType
+public enum EnemyType
 {
     Sapo,
     Mosca
