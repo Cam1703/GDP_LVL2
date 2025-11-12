@@ -8,6 +8,8 @@ public abstract class EnemyState
     protected Animator animator;
     protected Enemy enemy;
     protected bool playerInRange;
+    public CircleCollider2D range;
+
 
     public EnemyState(GameObject owner)
     {
@@ -16,11 +18,37 @@ public abstract class EnemyState
         rb = owner.GetComponent<Rigidbody2D>();
         animator = owner.GetComponent<Animator>();
         enemy = owner.GetComponent<Enemy>();
+        range = owner.GetComponent<CircleCollider2D>();
     }
 
     public virtual void Enter() { }
-    public virtual void Update() { }
+    public virtual void Update() {
+        if (playerInRange)
+        {
+            enemyController.enemyStateMachine.ChangeState(new EnemyAttackState(owner));
+        }
+
+
+    }
     public virtual void Exit() { }
+
+
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            playerInRange = true;
+
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D collision)
+    {
+        if (collision.CompareTag("Player"))
+        {
+            playerInRange = false;
+        }
+    }
 }
 
 public class EnemyStateMachine
@@ -38,10 +66,10 @@ public class EnemyStateMachine
 
     public void Update()
     {
-        if (CurrentState != null)
-            CurrentState.Update();
+        CurrentState?.Update();
     }
 }
+
 
 public class EnemyIdleState: EnemyState
 {
@@ -62,7 +90,7 @@ public class EnemyIdleState: EnemyState
         timer += Time.deltaTime;
         if (timer >= enemyController.idleTimer)
         {
-            // 
+            enemyController.enemyStateMachine.ChangeState(new EnemyPatrolState(owner));
         }
     }
 
@@ -114,6 +142,69 @@ public class EnemyPatrolState: EnemyState
         }
     }
 
+    public override void Exit()
+    {
+
+    }
+}
+
+public class EnemyAttackState : EnemyState
+{
+    public EnemyAttackState(GameObject owner) : base(owner) { }
+    public override void Enter()
+    {
+        animator.Play("Attack");
+    }
+    public override void Update()
+    {
+        // Attack logic here
+        if(enemyController.enemyType == EnemyType.Mosca)
+        {
+            // Mosca specific attack logic
+            // Shoot projectile towards player
+
+        }
+        else if (enemyController.enemyType == EnemyType.Sapo)
+        {
+            // Sapo specific attack logic
+            // Leap towards player
+        }
+    }
+    public override void Exit()
+    {
+
+    }
+}
+
+public class EnemyDamagedState : EnemyState
+{
+    public EnemyDamagedState(GameObject owner) : base(owner) { }
+    public override void Enter()
+    {
+        animator.Play("Damaged");
+    }
+    public override void Update()
+    {
+        // Damaged logic here
+
+    }
+    public override void Exit()
+    {
+    }
+}
+
+public class EnemyDeadState : EnemyState
+{
+    public EnemyDeadState(GameObject owner) : base(owner) { }
+    public override void Enter()
+    {
+        animator.Play("Dead");
+        Object.Destroy(owner, 1f); // Destroy after 1 second
+    }
+    public override void Update()
+    {
+        // Dead logic here
+    }
     public override void Exit()
     {
 

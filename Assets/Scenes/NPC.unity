@@ -349,11 +349,120 @@ PrefabInstance:
       propertyPath: m_TagString
       value: Enemy
       objectReference: {fileID: 0}
+    - target: {fileID: 6668770504912050862, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
+      propertyPath: m_Size.x
+      value: 0.38
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668770504912050862, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
+      propertyPath: m_Size.y
+      value: 0.40999997
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668770504912050862, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
+      propertyPath: m_Offset.x
+      value: -0.030000001
+      objectReference: {fileID: 0}
+    - target: {fileID: 6668770504912050862, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
+      propertyPath: m_Offset.y
+      value: 0.325
+      objectReference: {fileID: 0}
+    - target: {fileID: 7675691820477795678, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: -5512527372077169109, guid: 96f7726a01270d74eba8ef12b001644a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 5681734966058821964, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
+      insertIndex: 4
+      addedObject: {fileID: 146480105}
+    - targetCorrespondingSourceObject: {fileID: 5681734966058821964, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 146480104}
+    - targetCorrespondingSourceObject: {fileID: 5681734966058821964, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 146480106}
   m_SourcePrefab: {fileID: 100100000, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
+--- !u!1 &146480103 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5681734966058821964, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
+  m_PrefabInstance: {fileID: 146480102}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &146480104
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 146480103}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 6825480950849716214, guid: 96f7726a01270d74eba8ef12b001644a, type: 3}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &146480105
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 146480103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 769663640078e38488f05dbe03779cdb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyController
+  patrolPoints: []
+  velocity: 2
+  idleTimer: 2
+  enemyType: 1
+  currentPatrolIndex: 0
+--- !u!58 &146480106
+CircleCollider2D:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 146480103}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Density: 1
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_ForceSendLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ForceReceiveLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_ContactCaptureLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_CallbackLayers:
+    serializedVersion: 2
+    m_Bits: 4294967295
+  m_IsTrigger: 0
+  m_UsedByEffector: 0
+  m_CompositeOperation: 0
+  m_CompositeOrder: 0
+  m_Offset: {x: -0.030000001, y: 0.325}
+  m_Radius: 4
 --- !u!1 &186927264
 GameObject:
   m_ObjectHideFlags: 0

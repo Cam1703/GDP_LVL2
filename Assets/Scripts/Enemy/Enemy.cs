@@ -5,6 +5,7 @@ public class Enemy : MonoBehaviour
     public Health health;
     public SpriteRenderer spriteRenderer;
 
+
     private void OnEnable()
     {
         health.OnDammaged += HandleDamage;
@@ -33,8 +34,8 @@ public class Enemy : MonoBehaviour
         spriteRenderer.color = Color.white;
     }
 
-
 }
+
 
 public enum EnemyType
 {
