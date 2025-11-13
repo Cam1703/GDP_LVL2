@@ -4,7 +4,12 @@ public class Enemy : MonoBehaviour
 {
     public Health health;
     public SpriteRenderer spriteRenderer;
+    private EnemyController controller;
 
+    private void Awake()
+    {
+        controller = GetComponent<EnemyController>();
+    }
 
     private void OnEnable()
     {
@@ -21,21 +26,20 @@ public class Enemy : MonoBehaviour
     private void HandleDamage()
     {
         spriteRenderer.color = Color.red;
-        Invoke("ResetColor", 0.1f);
+        Invoke(nameof(ResetColor), 0.1f);
+        controller.enemyStateMachine.ChangeState(new EnemyDamagedState(gameObject));
     }
 
     private void HandleDeath()
     {
-        Destroy(gameObject);
+        controller.enemyStateMachine.ChangeState(new EnemyDeadState(gameObject));
     }
 
     private void ResetColor()
     {
         spriteRenderer.color = Color.white;
     }
-
 }
-
 
 public enum EnemyType
 {

@@ -7,9 +7,6 @@ public abstract class EnemyState
     protected Rigidbody2D rb;
     protected Animator animator;
     protected Enemy enemy;
-    protected bool playerInRange;
-    public CircleCollider2D range;
-
 
     public EnemyState(GameObject owner)
     {
@@ -18,37 +15,11 @@ public abstract class EnemyState
         rb = owner.GetComponent<Rigidbody2D>();
         animator = owner.GetComponent<Animator>();
         enemy = owner.GetComponent<Enemy>();
-        range = owner.GetComponent<CircleCollider2D>();
     }
 
     public virtual void Enter() { }
-    public virtual void Update() {
-        if (playerInRange)
-        {
-            enemyController.enemyStateMachine.ChangeState(new EnemyAttackState(owner));
-        }
-
-
-    }
+    public virtual void Update() { }
     public virtual void Exit() { }
-
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            playerInRange = true;
-
-        }
-    }
-
-    private void OnTriggerExit2D(Collider2D collision)
-    {
-        if (collision.CompareTag("Player"))
-        {
-            playerInRange = false;
-        }
-    }
 }
 
 public class EnemyStateMachine
@@ -57,9 +28,7 @@ public class EnemyStateMachine
 
     public void ChangeState(EnemyState newState)
     {
-        if (CurrentState != null)
-            CurrentState.Exit();
-
+        CurrentState?.Exit();
         CurrentState = newState;
         CurrentState.Enter();
     }
@@ -70,8 +39,7 @@ public class EnemyStateMachine
     }
 }
 
-
-public class EnemyIdleState: EnemyState
+public class EnemyIdleState : EnemyState
 {
     private float timer;
 
@@ -86,52 +54,54 @@ public class EnemyIdleState: EnemyState
 
     public override void Update()
     {
-        // Patrol after idle timer
         timer += Time.deltaTime;
+
+        if (enemyController.playerInRange)
+        {
+            enemyController.enemyStateMachine.ChangeState(new EnemyAttackState(owner));
+            return;
+        }
+
         if (timer >= enemyController.idleTimer)
         {
             enemyController.enemyStateMachine.ChangeState(new EnemyPatrolState(owner));
         }
     }
-
-    public override void Exit()
-    {
-    }
-
 }
 
-public class EnemyPatrolState: EnemyState
+public class EnemyPatrolState : EnemyState
 {
     public EnemyPatrolState(GameObject owner) : base(owner) { }
 
     public override void Enter()
     {
-        //Debug.Log("NPC-Entering Patrol State");
-        animator.Play("Walk");
+        animator.Play("Idle");
 
-        // If not enough patrol points, go back to idle
         if (enemyController.patrolPoints == null || enemyController.patrolPoints.Length < 2)
         {
             enemyController.enemyStateMachine.ChangeState(new EnemyIdleState(owner));
+            return;
         }
     }
 
     public override void Update()
     {
+        if (enemyController.playerInRange)
+        {
+            enemyController.enemyStateMachine.ChangeState(new EnemyAttackState(owner));
+            return;
+        }
 
         Transform targetPoint = enemyController.patrolPoints[enemyController.currentPatrolIndex];
+        Vector2 currentPos = owner.transform.position;
+        Vector2 targetPos = new Vector2(targetPoint.position.x, currentPos.y);
 
-        // Move only along the X axis
-        Vector2 currentPosition = owner.transform.position;
-        Vector2 targetPosition = new Vector2(targetPoint.position.x, currentPosition.y);
+        rb.MovePosition(Vector2.MoveTowards(currentPos, targetPos, enemyController.velocity * Time.deltaTime));
 
-        rb.MovePosition(Vector2.MoveTowards(currentPosition, targetPosition, enemyController.velocity * Time.deltaTime));
-
-        // Check if reached horizontally
-        if (Mathf.Abs(currentPosition.x - targetPoint.position.x) < 0.1f)
+        if (Mathf.Abs(currentPos.x - targetPos.x) < 0.05f)
         {
-            // Flip sprite horizontally
-            SpriteRenderer sr = enemyController.gameObject.GetComponent<SpriteRenderer>();
+            // Flip sprite
+            var sr = enemyController.GetComponent<SpriteRenderer>();
             sr.flipX = !sr.flipX;
 
             enemyController.currentPatrolIndex++;
@@ -141,72 +111,116 @@ public class EnemyPatrolState: EnemyState
             enemyController.enemyStateMachine.ChangeState(new EnemyIdleState(owner));
         }
     }
-
-    public override void Exit()
-    {
-
-    }
 }
 
 public class EnemyAttackState : EnemyState
 {
+    private float attackTimer;
+
     public EnemyAttackState(GameObject owner) : base(owner) { }
+
     public override void Enter()
     {
+        attackTimer = 0f;
         animator.Play("Attack");
     }
+
     public override void Update()
     {
-        // Attack logic here
-        if(enemyController.enemyType == EnemyType.Mosca)
+        if (!enemyController.playerInRange)
         {
-            // Mosca specific attack logic
-            // Shoot projectile towards player
+            enemyController.enemyStateMachine.ChangeState(new EnemyIdleState(owner));
+            return;
+        }
 
+        attackTimer += Time.deltaTime;
+
+        if (enemyController.enemyType == EnemyType.Mosca)
+        {
+            HandleMoscaAttack();
         }
         else if (enemyController.enemyType == EnemyType.Sapo)
         {
-            // Sapo specific attack logic
-            // Leap towards player
+            HandleSapoAttack();
         }
     }
-    public override void Exit()
-    {
 
+    private void HandleMoscaAttack()
+    {
+        if (enemyController.player == null || enemyController.projectilePrefab == null || enemyController.firePoint == null)
+            return;
+
+        // Shoot periodically
+        if (attackTimer >= enemyController.attackCooldown)
+        {
+            attackTimer = 0f;
+
+            // Compute direction to player
+            Vector2 direction = (enemyController.player.position - enemyController.firePoint.position).normalized;
+
+            // Flip sprite depending on player's position
+            var sr = enemyController.GetComponent<SpriteRenderer>();
+            if (sr != null)
+            {
+                bool playerIsOnRight = enemyController.player.position.x > owner.transform.position.x;
+                sr.flipX = !playerIsOnRight; // assuming facing right by default
+            }
+
+            // Rotate firePoint to aim at the player (optional)
+            float angle = Mathf.Atan2(direction.y, direction.x) * Mathf.Rad2Deg;
+            enemyController.firePoint.rotation = Quaternion.Euler(0, 0, angle);
+
+            // Instantiate projectile
+            GameObject projectile = Object.Instantiate(
+                enemyController.projectilePrefab,
+                enemyController.firePoint.position,
+                Quaternion.identity
+            );
+
+            var proj = projectile.GetComponent<EnemyProjectile>();
+            if (proj != null)
+                proj.SetDirection(direction);
+
+            // Play attack animation again
+            animator.Play("Attack");
+        }
+    }
+
+
+    private void HandleSapoAttack()
+    {
+        //TODO
     }
 }
+
 
 public class EnemyDamagedState : EnemyState
 {
     public EnemyDamagedState(GameObject owner) : base(owner) { }
+
     public override void Enter()
     {
-        animator.Play("Damaged");
+        animator.Play("Damage");
     }
+
     public override void Update()
     {
-        // Damaged logic here
-
-    }
-    public override void Exit()
-    {
+        // Optional: return to idle after damaged anim
+        if (animator.GetCurrentAnimatorStateInfo(0).normalizedTime >= 1f)
+        {
+            enemyController.enemyStateMachine.ChangeState(new EnemyIdleState(owner));
+        }
     }
 }
 
 public class EnemyDeadState : EnemyState
 {
     public EnemyDeadState(GameObject owner) : base(owner) { }
+
     public override void Enter()
     {
-        animator.Play("Dead");
-        Object.Destroy(owner, 1f); // Destroy after 1 second
-    }
-    public override void Update()
-    {
-        // Dead logic here
-    }
-    public override void Exit()
-    {
-
+        animator.Play("Death");
+        Object.Destroy(owner, 1f);
     }
 }
+
