@@ -1,11 +1,13 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerHealthUI : MonoBehaviour
 {
     public static PlayerHealthUI Instance { get; private set; }
 
-    [SerializeField] TMPro.TMP_Text healthText;
     [SerializeField] Health playerHealth;
+    [SerializeField] Sprite[] healthSprites;
+    [SerializeField] Image healthImage;
 
     void Awake()
     {
@@ -27,10 +29,11 @@ public class PlayerHealthUI : MonoBehaviour
 
     public void UpdateHealthUI()
     {
-        if (playerHealth != null && healthText != null)
+        if (playerHealth != null && healthSprites.Length > 0)
         {
             Debug.Log("Actualizando UI de salud");
-            healthText.text = "Health: " + playerHealth.health.ToString();
+            healthImage.sprite = healthSprites[playerHealth.health];
+            //healthText.text = "Health: " + playerHealth.health.ToString();
         }
     }
 }
