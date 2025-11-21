@@ -143,10 +143,5 @@ public class SkillTree : MonoBehaviour
         experienceText.text = $"XP: {languageSystem.GetExperience()} / {languageSystem.GetExperiencePerSkillPoints()}" ;
     }
 
-    // --- Ejemplo: añadir experiencia desde otro lugar ---
-    public void GainExperienceExample()
-    {
-        languageSystem.AddExperience(50);
-        UpdateUI();
-    }
+    
 }
