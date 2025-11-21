@@ -5,6 +5,7 @@ public class Enemy : MonoBehaviour
     public Health health;
     public SpriteRenderer spriteRenderer;
     private EnemyController controller;
+    public int experiencePoints = 5;
 
     private void Awake()
     {
@@ -33,6 +34,9 @@ public class Enemy : MonoBehaviour
     private void HandleDeath()
     {
         controller.enemyStateMachine.ChangeState(new EnemyDeadState(gameObject));
+        LanguageSystem.Instance.AddExperience(experiencePoints);
+        Destroy(transform.root.gameObject, 1f);
+
     }
 
     private void ResetColor()

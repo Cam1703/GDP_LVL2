@@ -369,15 +369,19 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: -5512527372077169109, guid: 96f7726a01270d74eba8ef12b001644a, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6179864419361454708, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 3031689589178800257, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
       insertIndex: -1
       addedObject: {fileID: 439767788}
     m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 402599341467300231, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 325571380}
     - targetCorrespondingSourceObject: {fileID: 5681734966058821964, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
-      insertIndex: 4
+      insertIndex: 3
       addedObject: {fileID: 146480105}
     - targetCorrespondingSourceObject: {fileID: 5681734966058821964, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
       insertIndex: -1
@@ -478,6 +482,22 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3031689589178800257, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
   m_PrefabInstance: {fileID: 146480102}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &146480110 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8299146721680984533, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
+  m_PrefabInstance: {fileID: 146480102}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 146480103}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5a463703dfaf4f143ae0ad6b6144ab97, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Health
+--- !u!212 &146480114 stripped
+SpriteRenderer:
+  m_CorrespondingSourceObject: {fileID: 7675691820477795678, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
+  m_PrefabInstance: {fileID: 146480102}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &186927264
 GameObject:
   m_ObjectHideFlags: 0
@@ -529,6 +549,26 @@ MonoBehaviour:
   continueIcon: {fileID: 686814627}
   continueCooldown: 0.5
   endCooldownDuration: 1
+--- !u!1 &325571378 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 402599341467300231, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
+  m_PrefabInstance: {fileID: 146480102}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &325571380
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 325571378}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e2249d630e6125041a9c877e9856d402, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Enemy
+  health: {fileID: 146480110}
+  spriteRenderer: {fileID: 146480114}
+  experiencePoints: 5
 --- !u!1 &439767787
 GameObject:
   m_ObjectHideFlags: 0

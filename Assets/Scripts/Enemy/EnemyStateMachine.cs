@@ -220,7 +220,7 @@ public class EnemyDeadState : EnemyState
     public override void Enter()
     {
         animator.Play("Death");
-        Object.Destroy(owner, 1f);
+
     }
 }
 
