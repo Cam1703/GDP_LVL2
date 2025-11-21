@@ -30,8 +30,8 @@ public class LanguageSystem : MonoBehaviour
     private Dictionary<Language, int> languageLevels = new Dictionary<Language, int>();
     private const string SaveKey = "LanguageSave";
 
-    private int skillPoints = 0;
-    private int experiencePoints = 0;
+    public int skillPoints = 0;
+    public int experiencePoints = 0;
 
     // Experiencia necesaria para ganar 1 skill point 
     private const int ExpPerSkillPoint = 100;
@@ -58,6 +58,8 @@ public class LanguageSystem : MonoBehaviour
 
         skillPoints = 2;
         experiencePoints = 10;
+
+        PlayerXpUI.instance.UpdateXpUI();
     }
 
     // ------------------ NIVEL DE IDIOMAS ------------------
@@ -96,7 +98,7 @@ public class LanguageSystem : MonoBehaviour
             skillPoints++;
             Debug.Log($"¡Ganaste un Skill Point! Total: {skillPoints}");
         }
-
+        PlayerXpUI.instance.UpdateXpUI();
         SaveData();
     }
 
@@ -109,6 +111,7 @@ public class LanguageSystem : MonoBehaviour
         }
 
         skillPoints--;
+        PlayerXpUI.instance.UpdateXpUI();
         SaveData();
         return true;
     }
