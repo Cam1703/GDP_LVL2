@@ -189,7 +189,7 @@ public class DashState : WalkState
 
 public class JumpState : State
 {
-    private float jumpHeight = 2f;
+    private float jumpHeight = 3.5f;
     private float jumpForce;
     private float buttonTime = 0.3f;
     private float jumpTime;

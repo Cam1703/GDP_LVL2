@@ -1,0 +1,2 @@
+<font="Babelonia SDF">  Buen dia, joven. ¿Que se le ofrece? </font> #speaker: Constructor #portrait:Hombre
+No entiendo nada... creo que debo aprender su idioma. </font> #speaker:Angel #portrait:Angel_Normal
