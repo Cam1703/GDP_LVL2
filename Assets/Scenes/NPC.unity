@@ -429,18 +429,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 769663640078e38488f05dbe03779cdb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyController
-  patrolPoints:
-  - {fileID: 1792127205}
-  - {fileID: 1646774108}
-  velocity: 2
-  idleTimer: 2
-  enemyType: 1
-  projectilePrefab: {fileID: 6190596149318713327, guid: 23390b2537435ad419e1b5f31179574d, type: 3}
-  firePoint: {fileID: 439767788}
-  attackCooldown: 1.5
-  currentPatrolIndex: 0
-  playerInRange: 0
-  player: {fileID: 0}
 --- !u!58 &146480106
 CircleCollider2D:
   m_ObjectHideFlags: 0
@@ -568,7 +556,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Enemy
   health: {fileID: 146480110}
   spriteRenderer: {fileID: 146480114}
-  experiencePoints: 5
 --- !u!1 &439767787
 GameObject:
   m_ObjectHideFlags: 0
@@ -781,17 +768,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!114 &517766870 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 3434198423468890442, guid: dc346912a8d230149ad913919a9f593f, type: 3}
-  m_PrefabInstance: {fileID: 734643148}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 533a21b36992f0a4b9104dde78fa0337, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::LanguageSystem
 --- !u!1 &567510046
 GameObject:
   m_ObjectHideFlags: 0
@@ -1092,22 +1068,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0a2dc03581ead554ea32538a3ef3e4be, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerXpUI
-  playerXp: {fileID: 517766870}
-  xpSprites:
-  - {fileID: -1330659960627068184, guid: 231b9514c58c8c64ba409f136773d0f9, type: 3}
-  - {fileID: -1428323815162564749, guid: 97f72578a757bc24b8b4a829971115f2, type: 3}
-  - {fileID: -4853901649009849321, guid: 27aad99210843bb40a6aed1d1fb7d708, type: 3}
-  - {fileID: 6382241138913441667, guid: 81a10b823717c814abb16349704d5ecc, type: 3}
-  - {fileID: -7272111019270650294, guid: 99bbe414323e3174a9ba360920cadf9d, type: 3}
-  - {fileID: 7760397183852838014, guid: d4411dc0e3a13cd46a1f2074ff7ce605, type: 3}
-  xpImage: {fileID: 703787487}
-  spSprites:
-  - {fileID: -1796824622429993494, guid: 087692b954b7f144d99320c83474833d, type: 3}
-  - {fileID: -2796414867274510831, guid: 3f54d2a5c486f7046924f23416ebd3a6, type: 3}
-  - {fileID: -9191601543546132682, guid: a880182408a0c4646853371d20ac35d5, type: 3}
-  - {fileID: 6502616805707619122, guid: 0cdb7981dfec3b84f8fe85e3b1f75baa, type: 3}
-  - {fileID: -8636904559324271983, guid: 8d28db00ff534404dbe9a70c8b8fa285, type: 3}
-  spImage: {fileID: 2047057605}
 --- !u!4 &706707991 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 6060329371614951792, guid: d21a3362e5bb94049a8e23161a6ab9d4, type: 3}
@@ -1309,15 +1269,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5eda3f606ef668f49868b4d6fc5eb312, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerHealthUI
+  healthText: {fileID: 0}
   playerHealth: {fileID: 1010231315}
-  healthSprites:
-  - {fileID: -145992151114014574, guid: 306ea6b0f38e41d499b412b308f54ca5, type: 3}
-  - {fileID: 5909275393453317307, guid: 2945d370ff73c1949a39a534ce1def7c, type: 3}
-  - {fileID: -7166589920819127421, guid: f55dd6150b6a00449a12baadc0a8e1ee, type: 3}
-  - {fileID: 6192059643273169130, guid: f49afd0ad3bc9404a81c862fcc80bb81, type: 3}
-  - {fileID: -6109362274755718709, guid: 1e7018c2793c3b7479d731639c2539d2, type: 3}
-  - {fileID: -9177379168101474274, guid: 77ab9d20afa2dbd459fe10b41c0d9434, type: 3}
-  healthImage: {fileID: 762843438}
 --- !u!1 &836039741
 GameObject:
   m_ObjectHideFlags: 0
@@ -1469,20 +1422,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
       propertyPath: language
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
       propertyPath: dialogueOptions.Array.size
-      value: 3
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
       propertyPath: 'dialogueOptions.Array.data[0]'
       value: 
-      objectReference: {fileID: 4900000, guid: c68582c11e58db24ba78ce6dd9b98bda, type: 3}
+      objectReference: {fileID: 4900000, guid: cdee690de4e55ff438a96b4370db6c86, type: 3}
     - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
       propertyPath: 'dialogueOptions.Array.data[1]'
       value: 
-      objectReference: {fileID: 4900000, guid: dbe6e37afddd28841be2f594cdeeac27, type: 3}
+      objectReference: {fileID: 4900000, guid: c22f6534084303f47874b62dc1b954e7, type: 3}
     - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
       propertyPath: 'dialogueOptions.Array.data[2]'
       value: 
@@ -3198,11 +3151,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 210221ce64fdd8249be84c0643847621, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::ParallaxCamera
---- !u!4 &1646774108 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 1915450776212978791, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
-  m_PrefabInstance: {fileID: 146480102}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1689940322
 GameObject:
   m_ObjectHideFlags: 0
@@ -3237,11 +3185,6 @@ Transform:
   - {fileID: 1160614004}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!4 &1792127205 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7804203072307758933, guid: 0dfd1133d6353bd48974468823b5a152, type: 3}
-  m_PrefabInstance: {fileID: 146480102}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1814880590
 GameObject:
   m_ObjectHideFlags: 0
@@ -3812,6 +3755,22 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
+      propertyPath: dialogueOptions.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
+      propertyPath: 'dialogueOptions.Array.data[0]'
+      value: 
+      objectReference: {fileID: 4900000, guid: 61459b6d2f8b9af439a2d17a5e6513ca, type: 3}
+    - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
+      propertyPath: 'dialogueOptions.Array.data[1]'
+      value: 
+      objectReference: {fileID: 4900000, guid: 878c0d786e10d6b409930a3c4bef281b, type: 3}
+    - target: {fileID: 5371893860044605708, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
+      propertyPath: 'dialogueOptions.Array.data[2]'
+      value: 
+      objectReference: {fileID: 4900000, guid: 91f42d56b5fc21747bf53b8ca2082cab, type: 3}
     - target: {fileID: 6071108720937361705, guid: d9dbe0ca82bcc214d9dbbe685d04e5af, type: 3}
       propertyPath: m_Layer
       value: 5
